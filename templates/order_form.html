@@ -40,6 +40,43 @@
           <input id="email" name="email" type="email" class="form-control" required>
         </div>
       </div>
+        <input type="hidden" name="cart_json" id="cart_json">
+
+        <div class="section-elevated mt-3">
+        <h5 class="mb-3">Twoje zamówienie</h5>
+        <div id="cart_summary" class="small"></div>
+        <div class="mt-2 fw-semibold">Suma: <span id="cart_total">0,00 zł</span></div>
+        </div>
+
+        <script>
+        (function(){
+        if(!window.KT_CART){ return; }
+        const cart = KT_CART.getCart();
+        // Put JSON into the hidden field
+        const field = document.getElementById('cart_json');
+        if(field) field.value = JSON.stringify(cart);
+
+        // Render a simple summary
+        const wrap = document.getElementById('cart_summary');
+        const totalEl = document.getElementById('cart_total');
+        if(wrap){
+        if(cart.length === 0){ wrap.textContent = 'Koszyk jest pusty.'; }
+        else{
+          wrap.innerHTML = cart.map(i => (
+            `<div class="d-flex justify-content-between border-bottom border-opacity-25 py-1">
+                <span>${i.qty}× ${i.name}</span>
+                <span>${KT_CART.formatPLN((i.price||0)*i.qty)}</span>
+              </div>`
+          )).join('');
+        }
+        }
+        if(totalEl){
+        const sum = cart.reduce((s,i)=> s + (i.price||0)*i.qty, 0);
+        totalEl.textContent = KT_CART.formatPLN(sum);
+        }
+        })();
+        </script>
+
       <div class="card-footer d-flex justify-content-end gap-2">
         <a href="{{ url_for('ciasta_i_chleby') }}" class="btn btn-outline-secondary">Wróć</a>
         <button type="submit" class="btn btn-primary">Zamów</button>
