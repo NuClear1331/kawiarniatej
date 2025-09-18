@@ -1,4 +1,4 @@
-// static/js/cart.js (v5)
+// static/js/cart.js (v6) — floating cart pill with clear button
 
 const CART_KEY = 'kt_cart_v1';
 
@@ -7,6 +7,10 @@ function parsePrice(raw){
   const s = String(raw).replace(/[^0-9,.\-]/g,'').replace(',', '.');
   const n = parseFloat(s);
   return isNaN(n) ? 0 : n;
+}
+function formatPLN(v){
+  try { return new Intl.NumberFormat('pl-PL',{style:'currency',currency:'PLN'}).format(v||0); }
+  catch { return (v||0).toFixed(2)+' zł'; }
 }
 
 function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
@@ -19,42 +23,56 @@ function addItem(item){
   else { cart.push({ id: item.id || null, name: item.name || 'Produkt', price: parsePrice(item.price), image: item.image || null, qty: item.qty || 1 }); }
   saveCart(cart);
 }
-function clearCart(){ localStorage.removeItem(CART_KEY); updateBadge(); }
-function formatPLN(v){ try { return new Intl.NumberFormat('pl-PL',{style:'currency',currency:'PLN'}).format(v||0); } catch { return (v||0).toFixed(2)+' zł'; } }
+function clearCart(){
+  localStorage.removeItem(CART_KEY);
+  updateBadge();
+  // Tiny toast feedback on clear
+  showToast('Koszyk wyczyszczony');
+}
+
+function cartCount(){
+  return getCart().reduce((s,i)=> s + (i.qty||1), 0);
+}
 
 function updateBadge(){
-  const count = getCart().reduce((s,i)=> s + (i.qty||1), 0);
+  const count = cartCount();
   document.querySelectorAll('[data-cart-count]').forEach(el => el.textContent = count);
 }
 
-function mountNavCart(){
-  // Inject a dedicated nav cart link inside the navbar, not on product buttons.
-  const nav = document.getElementById('main-nav');
-  if(!nav) return false;
-  if(document.getElementById('nav-cart-link')) { updateBadge(); return true; }
-
-  const li = document.createElement('li');
-  li.className = 'nav-item';
-  const a = document.createElement('a');
-  a.className = 'nav-link';
-  a.id = 'nav-cart-link';
-  a.href = '/zamowienie';
-  a.innerHTML = `Koszyk (<span data-cart-count>0</span>)`;
-  li.appendChild(a);
-  nav.appendChild(li);
-  return true;
-}
-
-function mountFab(){
-  // Floating fallback if navbar not present
+/* ------- Floating pill ------- */
+function mountFloatingCart(){
   if(document.querySelector('.cart-fab')) { updateBadge(); return; }
-  const btn = document.createElement('a');
-  btn.className = 'cart-fab';
-  btn.href = '/zamowienie';
-  btn.innerHTML = `Koszyk <span data-cart-count>0</span>`;
-  document.body.appendChild(btn);
+
+  const wrap = document.createElement('div');
+  wrap.className = 'cart-fab';
+  wrap.setAttribute('role','region');
+  wrap.setAttribute('aria-label','Koszyk');
+
+  // Main area → go to checkout
+  const main = document.createElement('a');
+  main.className = 'cart-fab-main';
+  main.href = '/zamowienie';
+  main.innerHTML = `🧺 <span class="label">Koszyk</span> <span class="count" data-cart-count>0</span>`;
+
+  // Clear button
+  const clear = document.createElement('button');
+  clear.type = 'button';
+  clear.className = 'cart-fab-clear';
+  clear.title = 'Wyczyść koszyk';
+  clear.setAttribute('aria-label','Wyczyść koszyk');
+  clear.textContent = 'Wyczyść';
+
+  wrap.appendChild(main);
+  wrap.appendChild(clear);
+  document.body.appendChild(wrap);
+
+  clear.addEventListener('click', (e)=>{
+    e.preventDefault();
+    if(confirm('Na pewno wyczyścić koszyk?')) clearCart();
+  });
 }
 
+/* ------- Order page helpers ------- */
 function populateOrderForm(){
   const field = document.getElementById('cart_json');
   const wrap  = document.getElementById('cart_summary');
@@ -84,12 +102,25 @@ function populateOrderForm(){
   }
 }
 
-/* Event wiring */
+/* ------- Tiny toast ------- */
+function showToast(text){
+  const t = document.createElement('div');
+  t.className = 'kt-toast';
+  t.textContent = text;
+  document.body.appendChild(t);
+  requestAnimationFrame(()=> t.classList.add('show'));
+  setTimeout(()=> {
+    t.classList.remove('show');
+    setTimeout(()=> t.remove(), 200);
+  }, 1300);
+}
+
+/* ------- Events ------- */
 document.addEventListener('click', (e)=>{
   const btn = e.target.closest('.add-to-cart');
   if(!btn) return;
-  e.preventDefault();
 
+  e.preventDefault();
   const name  = btn.dataset.name  || btn.getAttribute('data-name')  || 'Produkt';
   const price = parsePrice(btn.dataset.price || btn.getAttribute('data-price') || '0');
   const id    = btn.dataset.id || btn.getAttribute('data-id') || null;
@@ -110,22 +141,21 @@ document.addEventListener('click', (e)=>{
   window.location.href = '/zamowienie';
 });
 
-/* Init on load */
-document.addEventListener('DOMContentLoaded', ()=>{
-  const ok = mountNavCart();
-  if(!ok) mountFab();        // ensure access on every page
-  updateBadge();
-  populateOrderForm();
-
-  // Clear after successful order
-  const qs = new URLSearchParams(window.location.search);
-  if(qs.get('order') === 'ok'){ clearCart(); }
-});
-
-/* Just-in-time serialization before submit */
+/* Serialize latest cart just before submit */
 document.addEventListener('submit', (e)=>{
   const form = e.target.closest('#order-form');
   if(!form) return;
   const field = form.querySelector('#cart_json');
   if(field) field.value = JSON.stringify(getCart());
+});
+
+/* Init */
+document.addEventListener('DOMContentLoaded', ()=>{
+  mountFloatingCart();
+  updateBadge();
+  populateOrderForm();
+
+  // Clear after successful order (?order=ok)
+  const qs = new URLSearchParams(window.location.search);
+  if(qs.get('order') === 'ok'){ clearCart(); }
 });
