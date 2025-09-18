@@ -1,10 +1,10 @@
 :root{
   /* Palette */
-  --bottle-green: #063d30;     /* darker bottle green */
-  --bottle-green-600: #0a4f3f; /* hover */
-  --chocolate-brown: #5a2e00;  /* slightly deeper */
-  --bone-white: #F5F1E6;       /* warmer bone */
-  --accent-gold: #c8a96b;      /* subtle accent */
+  --bottle-green: #0a3b2f;       /* dimmed darker green */
+  --bottle-green-600: #124c3c;   /* hover */
+  --smoked-brown: #2e1b12;       /* smoked brown background */
+  --warm-bone: #f9f4e8;          /* warmer bone white for text */
+  --accent-gold: #c4a25c;
 
   /* Text colors */
   --ink: #1f2a2e;
@@ -19,8 +19,8 @@
 /* Typography */
 html, body{
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  color: var(--ink);
-  background-color: var(--bone-white);
+  color: var(--warm-bone);
+  background-color: var(--smoked-brown);
   line-height: 1.55;
 }
 h1,h2,h3,h4{
@@ -38,12 +38,13 @@ h1.display-6{ letter-spacing: .4px; }
 
 /* Navbar */
 .navbar{
+  background-color: var(--bottle-green);
   box-shadow: var(--shadow-sm);
 }
 .navbar .nav-link{
-  font-weight: 500;
-  opacity: .9;
+  color: var(--warm-bone) !important;
 }
+
 .navbar .nav-link:hover{
   opacity: 1;
   text-decoration: underline;
@@ -110,9 +111,10 @@ h1.display-6{ letter-spacing: .4px; }
 
 /* Footer */
 footer{
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+  background-color: var(--bottle-green);
+  color: var(--warm-bone);
 }
-footer a:hover{ opacity: .85; }
+footer a{ color: var(--warm-bone); }
 
 /* Gallery images */
 img.rounded-3{
