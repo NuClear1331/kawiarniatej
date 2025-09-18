@@ -1,148 +1,250 @@
+/* ===============================
+   Kawiarnia Tej — Theme Refresh
+   =============================== */
+
 :root{
   /* Palette */
-  --bottle-green: #0a3b2f;       /* dimmed darker green */
-  --bottle-green-600: #124c3c;   /* hover */
-  --smoked-brown: #2e1b12;       /* smoked brown background */
-  --warm-bone: #f9f4e8;          /* warmer bone white for text */
-  --accent-gold: #c4a25c;
+  --bottle-green: #0a3b2f;       /* dimmed dark green */
+  --bottle-green-600: #124c3c;   /* hover/active */
+  --smoked-brown: #2e1b12;       /* backdrop */
+  --smoked-brown-900: #22140e;   /* deeper banding */
+  --warm-bone: #f9f4e8;          /* warm bone white text */
+  --accent-gold: #c4a25c;        /* subtle accent */
 
-  /* Text colors */
-  --ink: #1f2a2e;
-  --ink-muted: #5c6b70;
-
-  /* Radii & shadow */
+  /* Radii & shadows */
   --radius: 14px;
-  --shadow-sm: 0 6px 18px rgba(0,0,0,.08);
-  --shadow-md: 0 10px 28px rgba(0,0,0,.12);
-}
-/* Global text override */
-body, p, li, span, a, .card, .form-control, .nav-link {
-  color: var(--warm-bone) !important;
+  --shadow-sm: 0 6px 18px rgba(0,0,0,.18);
+  --shadow-md: 0 10px 28px rgba(0,0,0,.28);
+  --shadow-lg: 0 18px 46px rgba(0,0,0,.35);
 }
 
-/* Typography */
+/* Base */
 html, body{
   font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: var(--warm-bone);
-  background: linear-gradient(180deg, #26140d, var(--smoked-brown));
-  background-color: var(--smoked-brown);
+  background: linear-gradient(180deg, var(--smoked-brown-900), var(--smoked-brown));
   line-height: 1.55;
 }
-h1,h2,h3,h4{
+
+/* Global text override (beats Bootstrap defaults) */
+body, p, li, span, a, .card, .form-control, .nav-link, .btn, .table, .alert {
+  color: var(--warm-bone) !important;
+}
+
+/* Headings use Playfair and bottle green for luxe contrast */
+h1,h2,h3,h4,h5{
   font-family: "Playfair Display", Georgia, serif;
-  color: var(--warm-bone);
+  color: var(--bottle-green);
   letter-spacing: .2px;
 }
 h1.display-6{ letter-spacing: .4px; }
 
-/* Utility background helpers kept for templates */
+/* Utilities preserved for templates */
 .bg-bottle{ background-color: var(--bottle-green) !important; }
-.bg-chocolate{ background-color: var(--chocolate-brown) !important; }
-.bg-bone{ background-color: var(--bone-white) !important; }
-.text-bone{ color: var(--bone-white); }
+.bg-chocolate{ background-color: var(--smoked-brown) !important; } /* repurposed */
+.bg-bone{ background-color: var(--warm-bone) !important; color:#1a1a1a !important; }
+.text-bone{ color: var(--warm-bone) !important; }
 
-/* Navbar */
-.navbar {
-  background-color: var(--bottle-green);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.55), 0 0 10px rgba(10,59,47,0.6);
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+/* ===========================
+   NAVBAR — depth + glow edge
+   =========================== */
+.navbar.bg-bottle,
+.navbar.navbar-dark.bg-bottle,
+.navbar{
+  background-color: var(--bottle-green) !important;
+  /* Drop shadow + soft green glow outline */
+  box-shadow: 0 4px 14px rgba(0,0,0,0.55), 0 0 12px rgba(10,59,47,0.55) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  z-index: 20;
 }
-.navbar .nav-link {
+.navbar .nav-link{
   color: var(--warm-bone) !important;
+  font-weight: 500;
+  opacity: .95;
 }
-.navbar .nav-link:hover {
-  opacity: 0.9;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+.navbar .nav-link:hover{
+  opacity: 1;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+  text-underline-offset: 4px;
 }
 
-/* Hero */
+/* ======================
+   HERO — inner shadow
+   ====================== */
 .hero-img{ height: 360px; object-fit: cover; }
 @media (min-width: 992px){ .hero-img{ height: 520px; } }
+
+/* Use this class on the text panel over hero image */
 .hero-overlay{
   background: linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.35));
   border-radius: var(--radius);
+  /* inner + drop shadow for "pressed" glass look */
+  box-shadow:
+    inset 0 1px 8px rgba(0,0,0,0.35),
+    0 10px 28px rgba(0,0,0,0.28);
+  backdrop-filter: saturate(120%) blur(1px);
 }
 
-/* Carousel */
-.carousel-inner{ border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-.carousel-control-prev-icon, .carousel-control-next-icon{
+/* =======================
+   CAROUSEL & GALLERY
+   ======================= */
+.carousel-inner{
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+.carousel-control-prev-icon,
+.carousel-control-next-icon{
   filter: drop-shadow(0 2px 8px rgba(0,0,0,.25));
 }
 
-/* Cards / tiles */
-.card {
-  background: var(--smoked-brown);
-  border: 1px solid rgba(255,255,255,0.05);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
-  transition: transform .2s ease, box-shadow .2s ease;
-}
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-}
-
-/* Choice tiles */
-.choice-tile{
-  border-color: rgba(0,0,0,0.08);
-  text-decoration: none;
-  color: inherit;
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  border-radius: var(--radius);
-  background: #fff;
-}
-.choice-tile:hover{
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-  border-color: rgba(0,0,0,0.12);
-}
-/* Buttons */
-.btn {
-  border-radius: calc(var(--radius) - 6px);
-  font-weight: 500;
-  color: var(--warm-bone);
-  box-shadow: var(--shadow-sm);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-@keyframes neon-pulse {
-  0%, 100% { box-shadow: 0 0 8px rgba(10,59,47,0.5); }
-  50% { box-shadow: 0 0 16px rgba(10,59,47,0.8); }
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  animation: neon-pulse 1.5s infinite alternate;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25), 0 0 12px rgba(10,59,47,0.6);
-}
-
-
-/* Footer */
-footer{
-  background-color: var(--bottle-green);
-  color: var(--warm-bone);
-}
-footer a{ color: var(--warm-bone); }
-
-/* Gallery images */
-img.rounded-3 {
+img.rounded-3{
   border-radius: var(--radius) !important;
   box-shadow: var(--shadow-sm);
   transition: transform .2s ease, box-shadow .2s ease;
 }
-img.rounded-3:hover {
+img.rounded-3:hover{
   transform: translateY(-3px) scale(1.02);
   box-shadow: var(--shadow-md);
 }
 
-/* Forms */
-.form-control {
+/* ================
+   CARDS / TILES
+   ================ */
+.card{
+  background: linear-gradient(180deg, rgba(46,27,18,0.9), rgba(34,20,14,0.95));
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.card:hover{
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+.card .card-footer{
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+/* clickable choice tiles */
+.choice-tile{
+  display: block;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(46,27,18,0.88), rgba(34,20,14,0.95));
+  color: inherit;
+  text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  box-shadow: var(--shadow-sm);
+}
+.choice-tile:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(255,255,255,0.12);
+}
+
+/* =========
+   BUTTONS
+   ========= */
+.btn,
+.btn:focus{
+  border-radius: calc(var(--radius) - 6px);
+  font-weight: 600;
+  color: var(--warm-bone) !important;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+
+.btn-primary,
+.btn-success,
+.btn-outline-primary{
+  background-color: var(--bottle-green) !important;
+  border-color: var(--bottle-green) !important;
+  color: var(--warm-bone) !important;
+}
+
+.btn:hover,
+.btn-primary:hover,
+.btn-success:hover,
+.btn-outline-primary:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.30), 0 0 14px rgba(10,59,47,0.65) !important;
+  filter: brightness(1.03);
+}
+
+/* Optional neon pulse on hover — uncomment to enable */
+
+@keyframes neon-pulse {
+  0%,100% { box-shadow: 0 0 8px rgba(10,59,47,0.45); }
+  50%     { box-shadow: 0 0 16px rgba(10,59,47,0.85); }
+}
+.btn:hover,
+.btn-primary:hover,
+.btn-success:hover,
+.btn-outline-primary:hover{
+  animation: neon-pulse 1.4s infinite alternate;
+}
+
+
+/* ======
+   FORMS
+   ====== */
+.form-control{
   background-color: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.15);
   color: var(--warm-bone);
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.4);
+  border-radius: 10px;
 }
-.form-control:focus {
+.form-control:focus{
   background-color: rgba(255,255,255,0.07);
   border-color: var(--bottle-green-600);
-  box-shadow: 0 0 0 .2rem rgba(10,79,63,.25);
+  box-shadow: 0 0 0 .2rem rgba(18,76,60,.25);
+  color: var(--warm-bone);
+}
+
+/* ========
+   FOOTER
+   ======== */
+footer{
+  background: linear-gradient(180deg, var(--bottle-green), #08271f);
+  color: var(--warm-bone);
+  /* inner bevel + slight lift to stand out */
+  box-shadow:
+    inset 0 1px 8px rgba(0,0,0,0.35),
+    0 -6px 18px rgba(0,0,0,0.25);
+}
+footer a{ color: var(--warm-bone); }
+footer a:hover{ opacity: .85; }
+
+/* ==================
+   MISC REFINEMENTS
+   ================== */
+
+/* Section containers pop slightly from bg */
+.section-elevated{
+  background: linear-gradient(180deg, rgba(46,27,18,0.9), rgba(34,20,14,0.95));
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  padding: 1.25rem;
+}
+
+/* Table look on dark bg */
+.table{
+  --bs-table-bg: transparent;
+  --bs-table-border-color: rgba(255,255,255,0.12);
+  --bs-table-striped-bg: rgba(255,255,255,0.03);
+  border-color: var(--bs-table-border-color);
+}
+
+/* Alerts contrast */
+.alert{
+  background-color: rgba(10,59,47,0.22);
+  border-color: rgba(10,59,47,0.45);
+}
+
+/* Make anchor focus visible on dark bg */
+a:focus{
+  outline: 2px dashed var(--accent-gold);
+  outline-offset: 2px;
 }
