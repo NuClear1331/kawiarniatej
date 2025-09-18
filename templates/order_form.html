@@ -1,87 +1,98 @@
 {% extends "base.html" %}
-{% block title %}Kawiarnia Tej — Zamówienie{% endblock %}
+{% block title %}Zamówienie — Kawiarnia Tej{% endblock %}
 {% block content %}
-<h2 class="mb-3">Formularz Zamówienia</h2>
 
-<div class="row g-4">
-  <div class="col-12 col-lg-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Twoje produkty</h5>
-        {% if items and items|length > 0 %}
-          <ul class="mb-0">
-            {% for it in items %}
-            <li>{{ it }}</li>
-            {% endfor %}
-          </ul>
-        {% else %}
-          <p class="text-muted mb-0"><em>Koszyk jest pusty. Wróć do „Ciasta i Chleby”, aby dodać produkty.</em></p>
-        {% endif %}
-      </div>
+<h1 class="mb-4">Zamówienie</h1>
+
+<form id="order-form" method="post" action="{{ url_for('zamowienie') }}" class="section-elevated p-3 p-md-4">
+  <div class="row g-3">
+    <div class="col-md-6">
+      <label class="form-label">Imię</label>
+      <input type="text" class="form-control" name="first_name" placeholder="Jan" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Nazwisko</label>
+      <input type="text" class="form-control" name="last_name" placeholder="Kowalski" required>
+    </div>
+
+    <div class="col-md-6">
+      <label class="form-label">Numer telefonu</label>
+      <input type="tel" class="form-control" name="phone" placeholder="+48 600 000 000" required>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">E-mail</label>
+      <input type="email" class="form-control" name="email" placeholder="jan@example.com" required>
     </div>
   </div>
-  <div class="col-12 col-lg-6">
-    <form method="post" class="card">
-      <div class="card-body">
-        <div class="mb-3">
-          <label for="first_name" class="form-label">Imię</label>
-          <input id="first_name" name="first_name" type="text" class="form-control" required>
-        </div>
-        <div class="mb-3">
-          <label for="last_name" class="form-label">Nazwisko</label>
-          <input id="last_name" name="last_name" type="text" class="form-control" required>
-        </div>
-        <div class="mb-3">
-          <label for="phone" class="form-label">Numer telefonu</label>
-          <input id="phone" name="phone" type="tel" class="form-control" required>
-        </div>
-        <div class="mb-3">
-          <label for="email" class="form-label">E-mail</label>
-          <input id="email" name="email" type="email" class="form-control" required>
-        </div>
-      </div>
-        <input type="hidden" name="cart_json" id="cart_json">
 
-        <div class="section-elevated mt-3">
-        <h5 class="mb-3">Twoje zamówienie</h5>
-        <div id="cart_summary" class="small"></div>
-        <div class="mt-2 fw-semibold">Suma: <span id="cart_total">0,00 zł</span></div>
-        </div>
+  <!-- cart payload for server -->
+  <input type="hidden" name="cart_json" id="cart_json">
 
-        <script>
-        (function(){
-        if(!window.KT_CART){ return; }
-        const cart = KT_CART.getCart();
-        // Put JSON into the hidden field
-        const field = document.getElementById('cart_json');
-        if(field) field.value = JSON.stringify(cart);
-
-        // Render a simple summary
-        const wrap = document.getElementById('cart_summary');
-        const totalEl = document.getElementById('cart_total');
-        if(wrap){
-        if(cart.length === 0){ wrap.textContent = 'Koszyk jest pusty.'; }
-        else{
-          wrap.innerHTML = cart.map(i => (
-            `<div class="d-flex justify-content-between border-bottom border-opacity-25 py-1">
-                <span>${i.qty}× ${i.name}</span>
-                <span>${KT_CART.formatPLN((i.price||0)*i.qty)}</span>
-              </div>`
-          )).join('');
-        }
-        }
-        if(totalEl){
-        const sum = cart.reduce((s,i)=> s + (i.price||0)*i.qty, 0);
-        totalEl.textContent = KT_CART.formatPLN(sum);
-        }
-        })();
-        </script>
-
-      <div class="card-footer d-flex justify-content-end gap-2">
-        <a href="{{ url_for('ciasta_i_chleby') }}" class="btn btn-outline-secondary">Wróć</a>
-        <button type="submit" class="btn btn-primary">Zamów</button>
-      </div>
-    </form>
+  <!-- summary -->
+  <div class="section-elevated mt-4">
+    <h5 class="mb-3">Twoje zamówienie</h5>
+    <div id="cart_summary" class="small"></div>
+    <div class="mt-2 fw-semibold">Suma: <span id="cart_total">0,00 zł</span></div>
   </div>
-</div>
+
+  <div class="mt-4 d-flex gap-2">
+    <a href="{{ url_for('home') }}" class="btn btn-outline-primary">Wróć</a>
+    <button type="submit" class="btn btn-primary">Zamów</button>
+  </div>
+</form>
+
+<!-- Fallback helper: if cart.js is loaded, it handles everything.
+     If not, this tiny script still fills the summary + hidden JSON. -->
+<script>
+(function(){
+  function parsePrice(raw){
+    if(raw == null) return 0;
+    var s = String(raw).replace(/[^0-9,.\-]/g,'').replace(',', '.');
+    var n = parseFloat(s);
+    return isNaN(n) ? 0 : n;
+  }
+  function formatPLN(v){
+    try { return new Intl.NumberFormat('pl-PL',{style:'currency',currency:'PLN'}).format(v||0); }
+    catch { return (v||0).toFixed(2)+' zł'; }
+  }
+
+  function getCart(){
+    if (window.KT_CART && typeof KT_CART.getCart === 'function') return KT_CART.getCart();
+    try { return JSON.parse(localStorage.getItem('kt_cart_v1')) || []; } catch { return []; }
+  }
+
+  function populate(){
+    var cart = getCart();
+    var field = document.getElementById('cart_json');
+    var wrap  = document.getElementById('cart_summary');
+    var total = document.getElementById('cart_total');
+
+    if (field) field.value = JSON.stringify(cart);
+
+    if (wrap){
+      if(!cart.length){
+        wrap.textContent = 'Koszyk jest pusty.';
+      } else {
+        wrap.innerHTML = cart.map(function(i){
+          var qty   = i.qty || 1;
+          var price = parsePrice(i.price);
+          var line  = qty * price;
+          return '<div class="d-flex justify-content-between border-bottom border-opacity-25 py-1">'
+               +   '<span>'+qty+'× '+(i.name||'Produkt')+'</span>'
+               +   '<span>'+formatPLN(line)+'</span>'
+               + '</div>';
+        }).join('');
+      }
+    }
+    if (total){
+      var sum = cart.reduce(function(s,i){ return s + parsePrice(i.price) * (i.qty||1); }, 0);
+      total.textContent = formatPLN(sum);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', populate);
+  document.getElementById('order-form')?.addEventListener('submit', populate);
+})();
+</script>
+
 {% endblock %}
