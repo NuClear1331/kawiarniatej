@@ -174,7 +174,7 @@ Pozycje:
         # Log/flash the error
         print("MAIL ERROR:", e)
         flash("Wystąpił problem z wysłaniem zamówienia. Spróbuj ponownie.", "error")
-        return render_template("order_from.html"), 500
+        return render_template("order_form.html"), 500
 
 @app.get("/thank-you")
 def thank_you():
