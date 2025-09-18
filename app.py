@@ -105,7 +105,7 @@ def add_to_cart(product_id: int):
 def zamowienie():
     if request.method == "GET":
         # Just render the form page
-        return render_template("order_from.html")
+        return render_template("order_form.html")
 
     # POST: read user fields
     first_name = request.form.get("first_name") or request.form.get("imie") or ""
