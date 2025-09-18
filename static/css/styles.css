@@ -35,7 +35,6 @@ body, p, li, span, a, .card, .form-control, .nav-link, .btn, .table, .alert {
 h1,h2,h3,h4,h5{
   font-family: "Cormorant Garamond", "Lora", Georgia, serif;
   font-weight: 600;
-  color: var(--bottle-green);
   letter-spacing: 0.2px;
 }
 h1 { font-weight: 700; }
