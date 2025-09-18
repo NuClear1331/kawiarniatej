@@ -169,7 +169,7 @@ Pozycje:
         mail.send(msg)
         flash("Dziękujemy! Zamówienie zostało wysłane.", "success")
         # Optionally redirect to a thank-you page or back to home
-        return redirect(url_for("home"))
+        return redirect(url_for("home", order="ok"))
     except Exception as e:
         # Log/flash the error
         print("MAIL ERROR:", e)
