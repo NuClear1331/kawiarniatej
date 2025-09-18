@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Kawiarnia Tej — Zamówienie{% endblock %}
+{% block content %}
+<h2 class="mb-3">Formularz Zamówienia</h2>
+
+<div class="row g-4">
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Twoje produkty</h5>
+        {% if items and items|length > 0 %}
+          <ul class="mb-0">
+            {% for it in items %}
+            <li>{{ it }}</li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <p class="text-muted mb-0"><em>Koszyk jest pusty. Wróć do „Ciasta i Chleby”, aby dodać produkty.</em></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-lg-6">
+    <form method="post" class="card">
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="first_name" class="form-label">Imię</label>
+          <input id="first_name" name="first_name" type="text" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="last_name" class="form-label">Nazwisko</label>
+          <input id="last_name" name="last_name" type="text" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Numer telefonu</label>
+          <input id="phone" name="phone" type="tel" class="form-control" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">E-mail</label>
+          <input id="email" name="email" type="email" class="form-control" required>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-end gap-2">
+        <a href="{{ url_for('ciasta_i_chleby') }}" class="btn btn-outline-secondary">Wróć</a>
+        <button type="submit" class="btn btn-primary">Zamów</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

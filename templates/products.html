@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Kawiarnia Tej — {{ category }}{% endblock %}
+{% block content %}
+<h2 class="mb-3">{{ category }}</h2>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+  {% for p in products %}
+  <div class="col">
+    <div class="card h-100">
+      <img src="{{ p.image }}" class="card-img-top" alt="{{ p.name }}">
+      <div class="card-body">
+        <h5 class="card-title">{{ p.name }}</h5>
+      </div>
+      <div class="card-footer bg-bone">
+        <form action="{{ url_for('add_to_cart', product_id=p.id) }}" method="post" class="d-inline">
+          <button class="btn btn-primary" type="submit">Dodaj do zamówienia</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="text-center my-4">
+  <a href="{{ url_for('zamowienie') }}" class="btn btn-success">Zamów</a>
+</div>
+{% endblock %}

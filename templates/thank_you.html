@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Kawiarnia Tej — Dziękujemy{% endblock %}
+{% block content %}
+<div class="text-center py-5">
+  <h2 class="mb-3">Dziękujemy za zamówienie!</h2>
+  <p>Odeślemy potwierdzenie i skontaktujemy się wkrótce.</p>
+  <a href="{{ url_for('home') }}" class="btn btn-primary mt-3">Wróć na stronę główną</a>
+</div>
+{% endblock %}

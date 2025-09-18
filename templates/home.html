@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Kawiarnia Tej — Strona główna{% endblock %}
+{% block content %}
+<section class="mb-4">
+  <div class="position-relative rounded-3 overflow-hidden">
+    <img class="w-100 object-fit-cover hero-img" src="https://picsum.photos/seed/hero-coffee/1600/600" alt="Zdjęcie kawiarni">
+    <div class="position-absolute top-50 start-50 translate-middle text-center text-bone shadow-lg p-3 rounded" style="background: rgba(0,0,0,0.35);">
+      <h1 class="display-6 fw-bold">W samym sercu Poznania</h1>
+      <p class="mb-0">Tymczasowy tekst na obrazie — najlepsza kawa i wypieki w mieście.</p>
+    </div>
+  </div>
+</section>
+
+<section class="mb-5">
+  <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner rounded-3">
+      {% for img in carousel_images %}
+      <div class="carousel-item {% if loop.index0 == 0 %}active{% endif %}">
+        <img class="d-block w-100" src="{{ img }}" alt="Slajd {{ loop.index }}">
+      </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+      <span class="visually-hidden">Poprzedni</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+      <span class="visually-hidden">Następny</span>
+    </button>
+  </div>
+</section>
+
+<section class="mb-4">
+  <h2 class="text-center fw-semibold mb-3">Galeria</h2>
+  <div class="row g-3">
+    {% for img in gallery_images %}
+    <div class="col-6 col-md-4">
+      <img class="img-fluid rounded-3" src="{{ img }}" alt="Galeria {{ loop.index }}">
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
