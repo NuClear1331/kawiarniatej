@@ -333,3 +333,21 @@ a:focus{
 .section, .container, .container-fluid, .row {
   background: transparent !important;
 }
+.cart-fab{
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  background: var(--bottle-green);
+  color: var(--warm-bone);
+  border-radius: 999px;
+  padding: .6rem 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 22px rgba(0,0,0,.35), 0 0 12px rgba(10,59,47,.45);
+  z-index: 2000;
+}
+.cart-fab:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0,0,0,.45), 0 0 16px rgba(10,59,47,.65);
+}
+

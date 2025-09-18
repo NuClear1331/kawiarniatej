@@ -1,4 +1,4 @@
-import os
+import os, json
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mail import Mail, Message
 
@@ -103,54 +103,78 @@ def add_to_cart(product_id: int):
 
 @app.route("/zamowienie", methods=["GET", "POST"])
 def zamowienie():
-    if request.method == "POST":
-        first = request.form.get("first_name", "").strip()
-        last = request.form.get("last_name", "").strip()
-        phone = request.form.get("phone", "").strip()
-        email = request.form.get("email", "").strip()
-        if not all([first, last, phone, email]):
-            flash("Proszę wypełnić wszystkie pola formularza.", "error")
-            return redirect(url_for("zamowienie"))
+    if request.method == "GET":
+        # Just render the form page
+        return render_template("order_from.html")
 
-        cart_ids = session.get("cart", [])
-        items = [next((p["name"] for p in all_products() if p["id"] == pid), None) for pid in cart_ids]
-        items = [i for i in items if i]
+    # POST: read user fields
+    first_name = request.form.get("first_name") or request.form.get("imie") or ""
+    last_name  = request.form.get("last_name")  or request.form.get("nazwisko") or ""
+    phone      = request.form.get("phone")      or request.form.get("numer_telefonu") or ""
+    email      = request.form.get("email")      or request.form.get("e_mail") or ""
 
-        subject = "Zamówienie ze strony — Kawiarnia Tej"
-        body_lines = [
-            "Nowe zamówienie ze strony Kawiarnia Tej:",
-            "",
-            f"Imię i Nazwisko: {first} {last}",
-            f"Telefon: {phone}",
-            f"E-mail: {email}",
-            "",
-            "Zamówione produkty:",
-        ] + [f"- {it}" for it in (items or ["(brak pozycji)"])] + [
-            "",
-            "--",
-            "Wiadomość wygenerowana automatycznie."
-        ]
-        msg = Message(subject, recipients=["kacper.rabeda6@gmail.com"])
-        msg.body = "\n".join(body_lines)
+    # Cart JSON from hidden field
+    cart_json  = request.form.get("cart_json") or "[]"
+    try:
+        cart = json.loads(cart_json)
+    except Exception:
+        cart = []
 
-        try:
-            if not app.config['MAIL_USERNAME'] or not app.config['MAIL_PASSWORD']:
-                print("[DEV] Email would be sent:\n", msg.body)
-            else:
-                mail.send(msg)
-        except Exception as e:
-            print("Mail error:", e)
-            flash("Błąd podczas wysyłania wiadomości. Spróbuj ponownie później.", "error")
-            return redirect(url_for("zamowienie"))
+    # Build a readable order summary
+    def pln(v): 
+        try: 
+            return f"{float(v):.2f} zł"
+        except: 
+            return f"{v} zł"
 
-        session.pop("cart", None)
-        return redirect(url_for("thank_you"))
+    lines = []
+    total = 0.0
+    for item in cart:
+        name = item.get("name", "Produkt")
+        qty  = int(item.get("qty", 1) or 1)
+        price = float(item.get("price", 0) or 0)
+        line_total = qty * price
+        total += line_total
+        lines.append(f"- {qty} × {name}: {pln(line_total)}")
 
-    # GET
-    cart_ids = session.get("cart", [])
-    items = [next((p["name"] for p in all_products() if p["id"] == pid), None) for pid in cart_ids]
-    items = [i for i in items if i]
-    return render_template("order_form.html", items=items)
+    order_summary = "\n".join(lines) if lines else "(Koszyk pusty)"
+    total_line = f"Suma: {pln(total)}"
+
+    # Email content
+    subject = f"Nowe zamówienie — {first_name} {last_name}"
+    body = f"""Nowe zamówienie z formularza:
+
+Dane klienta:
+- Imię: {first_name}
+- Nazwisko: {last_name}
+- Telefon: {phone}
+- E-mail: {email}
+
+Pozycje:
+{order_summary}
+
+{total_line}
+"""
+
+    # Send the email (uses your Flask-Mail configuration)
+    try:
+        msg = Message(
+            subject=subject,
+            recipients=["kacper.rabeda6@gmail.com"],  # <-- change if needed
+            body=body,
+        )
+        # optional: set reply-to to customer email
+        if email:
+            msg.reply_to = email
+        mail.send(msg)
+        flash("Dziękujemy! Zamówienie zostało wysłane.", "success")
+        # Optionally redirect to a thank-you page or back to home
+        return redirect(url_for("home"))
+    except Exception as e:
+        # Log/flash the error
+        print("MAIL ERROR:", e)
+        flash("Wystąpił problem z wysłaniem zamówienia. Spróbuj ponownie.", "error")
+        return render_template("order_from.html"), 500
 
 @app.get("/thank-you")
 def thank_you():
