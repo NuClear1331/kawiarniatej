@@ -1,9 +1,9 @@
-// static/js/cart.js  (v4)
+// static/js/cart.js (v5)
+
 const CART_KEY = 'kt_cart_v1';
 
 function parsePrice(raw){
   if(raw == null) return 0;
-  // keep digits, dot, comma; remove others; prefer dot
   const s = String(raw).replace(/[^0-9,.\-]/g,'').replace(',', '.');
   const n = parseFloat(s);
   return isNaN(n) ? 0 : n;
@@ -27,21 +27,27 @@ function updateBadge(){
   document.querySelectorAll('[data-cart-count]').forEach(el => el.textContent = count);
 }
 
-function ensureCartBadge(){
-  const candidates = Array.from(document.querySelectorAll('a.nav-link, a, button'));
-  const matches = candidates.find(a => /zamow|order|checkout|koszyk/i.test((a.getAttribute('href')||'') + ' ' + a.textContent));
-  if(matches && !matches.querySelector('[data-cart-count]')){
-    const span = document.createElement('span');
-    span.className = 'ms-1 cart-badge';
-    span.innerHTML = '(<span data-cart-count>0</span>)';
-    matches.appendChild(span);
-    return true;
-  }
-  return false;
+function mountNavCart(){
+  // Inject a dedicated nav cart link inside the navbar, not on product buttons.
+  const nav = document.getElementById('main-nav');
+  if(!nav) return false;
+  if(document.getElementById('nav-cart-link')) { updateBadge(); return true; }
+
+  const li = document.createElement('li');
+  li.className = 'nav-item';
+  const a = document.createElement('a');
+  a.className = 'nav-link';
+  a.id = 'nav-cart-link';
+  a.href = '/zamowienie';
+  a.innerHTML = `Koszyk (<span data-cart-count>0</span>)`;
+  li.appendChild(a);
+  nav.appendChild(li);
+  return true;
 }
 
-function createFloatingCheckout(){
-  if(document.querySelector('.cart-fab')) return;
+function mountFab(){
+  // Floating fallback if navbar not present
+  if(document.querySelector('.cart-fab')) { updateBadge(); return; }
   const btn = document.createElement('a');
   btn.className = 'cart-fab';
   btn.href = '/zamowienie';
@@ -78,6 +84,7 @@ function populateOrderForm(){
   }
 }
 
+/* Event wiring */
 document.addEventListener('click', (e)=>{
   const btn = e.target.closest('.add-to-cart');
   if(!btn) return;
@@ -103,23 +110,22 @@ document.addEventListener('click', (e)=>{
   window.location.href = '/zamowienie';
 });
 
-// On load: set up UI, populate order form if present, update badge
+/* Init on load */
 document.addEventListener('DOMContentLoaded', ()=>{
-  const attached = ensureCartBadge();
-  if(!attached) createFloatingCheckout();
+  const ok = mountNavCart();
+  if(!ok) mountFab();        // ensure access on every page
   updateBadge();
   populateOrderForm();
 
-  // If redirected with ?order=ok — clear cart and badge
+  // Clear after successful order
   const qs = new URLSearchParams(window.location.search);
   if(qs.get('order') === 'ok'){ clearCart(); }
 });
 
-// Ensure latest cart is serialized right before submit
+/* Just-in-time serialization before submit */
 document.addEventListener('submit', (e)=>{
   const form = e.target.closest('#order-form');
   if(!form) return;
-  // refresh hidden field just-in-time
   const field = form.querySelector('#cart_json');
   if(field) field.value = JSON.stringify(getCart());
 });
