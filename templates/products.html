@@ -1,26 +1,56 @@
 {% extends "base.html" %}
-{% block title %}Kawiarnia Tej — {{ category }}{% endblock %}
+{% block title %}{{ (category or "Produkty") | title }} — Kawiarnia Tej{% endblock %}
 {% block content %}
-<h2 class="mb-3">{{ category }}</h2>
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-  {% for p in products %}
-  <div class="col">
-    <div class="card h-100">
-      <img src="{{ p.image }}" class="card-img-top" alt="{{ p.name }}">
-      <div class="card-body">
-        <h5 class="card-title">{{ p.name }}</h5>
-      </div>
-      <div class="card-footer bg-bone">
-        <form action="{{ url_for('add_to_cart', product_id=p.id) }}" method="post" class="d-inline">
-          <button class="btn btn-primary" type="submit">Dodaj do zamówienia</button>
-        </form>
+
+{# Accept multiple variable names, depending on your view #}
+{% set items = products or items or data or lista or katalog %}
+
+<h1 class="mb-4">{{ (category or "Produkty") | title }}</h1>
+
+{% if not items %}
+  <div class="alert alert-info">
+    Brak pozycji do wyświetlenia. (Sprawdź, co przekazuje widok do <code>products.html</code>.)
+  </div>
+{% else %}
+  <div class="row g-4">
+    {% for item in items %}
+    <div class="col-12 col-sm-6 col-lg-4">
+      <div class="card menu-card h-100">
+        <div class="menu-card-media">
+          <img
+            src="{{ item.image or item.img or item.photo or url_for('static', filename='img/placeholder.jpg') }}"
+            class="menu-card-img"
+            alt="{{ item.name or item.title or item.nazwa or 'Produkt' }}">
+          {% set badge_txt = item.badge or item.tag or item.label %}
+          {% if badge_txt %}
+            <span class="menu-badge">{{ badge_txt }}</span>
+          {% endif %}
+        </div>
+        <div class="card-body d-flex flex-column">
+          <h5 class="card-title mb-1">{{ item.name or item.title or item.nazwa }}</h5>
+          {% set desc_txt = item.desc or item.description or item.opis %}
+          {% if desc_txt %}
+            <p class="card-text text-muted-ink mb-3">{{ desc_txt }}</p>
+          {% endif %}
+
+          <div class="mt-auto d-flex align-items-center justify-content-between">
+            <span class="price-pill">
+              {{ item.price or item.cena or item.price_pln or item.kwota }}
+            </span>
+
+            {# Keep your existing cart behavior. If you have a route with IDs, swap this button for an <a> to url_for(). #}
+            <button class="btn btn-primary btn-sm add-to-cart"
+                    data-id="{{ item.id if item.id is defined }}"
+                    data-name="{{ item.name or item.title or item.nazwa }}"
+                    data-price="{{ item.price or item.cena or item.price_pln or item.kwota }}">
+              Dodaj do koszyka
+            </button>
+          </div>
+        </div>
       </div>
     </div>
+    {% endfor %}
   </div>
-  {% endfor %}
-</div>
+{% endif %}
 
-<div class="text-center my-4">
-  <a href="{{ url_for('zamowienie') }}" class="btn btn-success">Zamów</a>
-</div>
 {% endblock %}
