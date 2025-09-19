@@ -574,3 +574,34 @@ a, button, .btn {
 }
 .reveal { opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
 .reveal.show { opacity: 1; transform: none; }
+/* Cart dropdown hidden state */
+.cart-dropdown {
+  display: none;  /* hide by default, will be shown via .open */
+  position: absolute;
+  bottom: 100%; right: 0;
+  background-color: rgba(34, 49, 34, 0.95);  /* dimmed green/brown backdrop */
+  color: #f8f9fa;  /* light text for contrast (bone white) */
+  min-width: 200px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  /* Transition for fade/slide effect */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+/* Visible state */
+.cart-dropdown.open {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  /* (visibility could be used instead of display if preferred) */
+}
+/* Optional: adjust list item appearance */
+.cart-dropdown li {
+  font-size: 0.9rem;
+}
+.cart-dropdown li.border-bottom {
+  border-color: rgba(255,255,255,0.2);
+}
+
