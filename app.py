@@ -1,7 +1,7 @@
 import os, json
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_mail import Mail, Message
-
+from urllib.parse import quote_plus
 app = Flask(__name__)
 
 # Config
@@ -41,6 +41,7 @@ def inject_nav():
             {"href": url_for('menu'), "label": "Menu"},
             {"href": url_for('keto'), "label": "Keto"},
             {"href": url_for('ciasta_i_chleby'), "label": "Ciasta i Chleby"},
+            {"href": url_for('kontakt'),"label": "Kontakt", "href": "/kontakt"},
         ]
     }
 
@@ -100,6 +101,22 @@ def add_to_cart(product_id: int):
         session["cart"] = cart
         flash(f"Dodano „{product['name']}” do zamówienia.", "success")
     return redirect(request.referrer or url_for("ciasta_i_chleby"))
+
+@app.route("/kontakt")
+def kontakt():
+    contact = {
+        "name": "Kawiarnia TEJ",
+        "phone": "792 527 154",
+        "address": "Święty Marcin 63, 61-806 Poznań",
+        "email": "kawiarniatej@gmail.com",
+        "hours": [
+            "Poniedziałek – Piątek: 09:00–19:00",
+            "Sobota: 10:00–19:00",
+            "Niedziela: 11:00–19:00",
+        ],
+    }
+    address_q = quote_plus(contact["address"])
+    return render_template("kontakt.html", contact=contact, address_q=address_q)
 
 @app.route("/zamowienie", methods=["GET", "POST"])
 def zamowienie():
