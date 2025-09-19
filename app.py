@@ -379,7 +379,10 @@ def all_products():
 
 @app.context_processor
 def inject_products():
-    return {"ALL_PRODUCTS": all_products()}
+    try:
+        return {"ALL_PRODUCTS": all_products()}
+    except Exception:
+        return {"ALL_PRODUCTS": []}
 def inject_nav():
     return {
         "NAV": [
@@ -392,13 +395,6 @@ def inject_nav():
     }
 
 @app.route("/")
-def remove_from_cart(product_id: int):
-    cart = session.get("cart", [])
-    # Remove all occurrences of the product_id from the cart list
-    cart = [pid for pid in cart if pid != product_id]
-    session["cart"] = cart
-    flash("Usunięto produkt z koszyka.", "info")
-    return redirect(request.referrer or url_for("ciasta_i_chleby"))
 def home():
     gallery_files = ["a.jpg", "b.jpg", "c.jpg", "d.jpg", "e.jpg", "f.jpg"]
     gallery_images = [url_for('static', filename=f'img/galleryimg/{name}') for name in gallery_files]
@@ -555,6 +551,14 @@ Pozycje:
         flash("Wystąpił problem z wysłaniem zamówienia. Spróbuj ponownie.", "error")
         return render_template("order_form.html"), 500
 
+@app.route("/remove-from-cart/<int:product_id>")
+def remove_from_cart(product_id: int):
+    cart = session.get("cart", [])
+    # Remove all occurrences of the product_id from the cart list
+    cart = [pid for pid in cart if pid != product_id]
+    session["cart"] = cart
+    flash("Usunięto produkt z koszyka.", "info")
+    return redirect(request.referrer or url_for("ciasta_i_chleby"))
 @app.get("/thank-you")
 def thank_you():
     return render_template("thank_you.html")
