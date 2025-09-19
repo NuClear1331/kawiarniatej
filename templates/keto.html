@@ -1,18 +1,95 @@
 {% extends "base.html" %}
-{% block title %}Kawiarnia Tej — Keto{% endblock %}
+{% block title %}Kawiarnia Tej — O diecie Keto{% endblock %}
 {% block content %}
-<section class="mb-4 position-relative rounded-3 overflow-hidden">
-  <img class="w-100 object-fit-cover hero-img" src="/static/img/bgphotos/iketo.jpg" alt="Oferta keto">
-  <div class="position-absolute top-50 start-50 translate-middle text-center text-bone shadow-lg p-3 rounded" style="background: rgba(0,0,0,0.35);">
-    <h2 class="fw-bold">Keto słodkości i nie tylko!</h2>
-    <p>Dieta ketogeniczna inaczej zwana keto skupia się na niskim spożywaniu węgli a czerpaniu energii z tłuszczy. Znaczne ograniczenie a nawet całkowite wyeliminowanie cukru z codziennej diety jest celowym działaniem w keto aby osiągnąć stan ketozy czyli efektywnego spalania zapasów tłuszczu znajdujących się w organizmie.</p>
+
+<!-- Keto Page Header Section -->
+<section class="text-center text-bone py-5 mb-4 hero-keto position-relative overflow-hidden">
+  <img src="https://picsum.photos/seed/ketohero/1200/600" class="position-absolute top-0 start-50 translate-middle-x w-100 h-100 object-fit-cover opacity-25" alt="Keto background">
+  <div class="position-relative">
+    <h1 class="display-5 fw-bold">Dieta Keto – Smacznie i Zdrowo</h1>
+    <p class="lead">Poznaj sekrety diety ketogenicznej i nasze keto-specjały</p>
   </div>
 </section>
-<div class="text-muted">
-  <p>Swoje zastosowanie znalazła nie tylko wśród osób, które chcą zredukować swoją masę ciała. Jej pozytywne właściwości okazały się pomocne dla osób cierpiących na lekooporną padaczkę oraz rzadkie schorzenia metaboliczne i genetyczne. Cieszy się również popularnością wśród osób które nie mogą lub nie chcą spożywać glutenu.
-Ale co ma brak cukru do słodkości?</p>
-<p>Chcąc dalej cieszyć się przyjemnością spożywania pysznych ciast i ciasteczek, lodów i wszystkich innych pyszności, ale jednocześnie czuć się zdrowo i nie martwić się o negatywne skutki cukrów prostych, to właśnie dieta ketogeniczna zainspirowała mnie do skorzystania z przepisów na wyroby nie zawierające cukrów prostych. 
-Wśród oferowanych przez Nas wyrobów cukierniczych i piekarniczych znajdzie się coś zarówno dla miłośników czekolady, masła orzechowego jak i samych orzechów, owoców jagodowych, mascarpone i wiele innych.
-Pyszne i różne zamienniki dla chleba pszennego i bułek.</p>
-</div>
+
+<!-- What is Keto Diet -->
+<section class="container reveal mb-5">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <h2 class="fw-semibold mb-3">Czym jest dieta ketogeniczna?</h2>
+      <p>Dieta ketogeniczna (keto) to sposób odżywiania, w którym dominują <b>zdrowe tłuszcze</b>, umiarkowana ilość białka i bardzo mało węglowodanów. Ograniczenie cukrów powoduje, że organizm przestawia się na spalanie tłuszczu jako głównego źródła energii.</p>
+      <p>Efektem jest stan zwany <em>ketozą</em>, który sprzyja lepszemu spalaniu tkanki tłuszczowej. W praktyce oznacza to, że na keto możesz delektować się takimi rzeczami jak awokado, jajka, masło orzechowe czy łosoś – bez wyrzutów sumienia!</p>
+    </div>
+    <div class="col-md-6 text-center">
+      <img src="/static/img/pastry/keto-brownie.jpg" class="img-fluid rounded-3 shadow" alt="Keto brownie">
+    </div>
+  </div>
+</section>
+
+<!-- Benefits of Keto -->
+<section class="bg-secondary bg-opacity-25 text-dark py-5 reveal mb-5">
+  <div class="container">
+    <h2 class="text-center fw-semibold mb-4">Dlaczego warto?</h2>
+    <div class="row">
+      <div class="col-md-4 mb-4 mb-md-0 text-center">
+        <img src="https://img.icons8.com/fluency/48/000000/like.png" alt="" class="mb-2">
+        <h5>Lepsza energia</h5>
+        <p class="small">Wahania cukru we krwi odchodzą w zapomnienie – energia jest stabilna przez cały dzień.</p>
+      </div>
+      <div class="col-md-4 mb-4 mb-md-0 text-center">
+        <img src="https://img.icons8.com/fluency/48/000000/heart-health.png" alt="" class="mb-2">
+        <h5>Korzyści zdrowotne</h5>
+        <p class="small">Wiele osób na keto zauważa poprawę markerów zdrowia metabolicznego i obniżenie masy ciała.</p>
+      </div>
+      <div class="col-md-4 mb-4 mb-md-0 text-center">
+        <img src="https://img.icons8.com/fluency/48/000000/restaurant.png" alt="" class="mb-2">
+        <h5>Smaczna dieta</h5>
+        <p class="small">Keto to nie tylko dieta, ale i przyjemność – pozwala jeść sycące, pyszne posiłki (także słodkości!).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Our Keto Specialties Gallery -->
+<section class="container reveal mb-5">
+  <h2 class="text-center fw-semibold mb-4">Nasze keto specjały</h2>
+  <div class="row g-3">
+    <div class="col-12 col-md-4">
+      <img src="/static/img/pastry/keto-brownie-orzech.jpg" class="img-fluid rounded-3" alt="Keto Brownie z orzechami">
+      <h6 class="text-center mt-2">Keto Brownie z Orzechami</h6>
+    </div>
+    <div class="col-12 col-md-4">
+      <img src="/static/img/pastry/keto-tarta-jagodowa.jpg" class="img-fluid rounded-3" alt="Keto Tarta Jagodowa">
+      <h6 class="text-center mt-2">Keto Tarta Jagodowa</h6>
+    </div>
+    <div class="col-12 col-md-4">
+      <img src="/static/img/pastry/babeczki-tluszczowe.jpg" class="img-fluid rounded-3" alt="Babeczki tłuszczowe">
+      <h6 class="text-center mt-2">Babeczki Tłuszczowe (Fat Bombs)</h6>
+    </div>
+  </div>
+  <p class="text-center mt-3">
+    <a href="{{ url_for('ciasta_i_chleby') }}" class="btn btn-sm btn-primary">Zobacz pełną ofertę keto &raquo;</a>
+  </p>
+</section>
+
+<!-- Keto Footer Info -->
+<section class="bg-prim text-bone text-center py-4 reveal">
+  <h3 class="fw-semibold">Masz pytania o keto?</h3>
+  <p class="mb-0">Nasi pracownicy z chęcią opowiedzą Ci więcej przy filiżance kawy! <br>
+  <a href="{{ url_for('kontakt') }}" class="text-bone text-decoration-underline">Skontaktuj się z nami</a>, aby dowiedzieć się więcej.</p>
+</section>
+<script>
+  function revealOnScroll() {
+    const reveals = document.querySelectorAll('.reveal');
+    for (let el of reveals) {
+      const elTop = el.getBoundingClientRect().top;
+      if (elTop < window.innerHeight * 0.8) {
+        el.classList.add('show');
+      }
+    }
+  }
+  window.addEventListener('scroll', revealOnScroll);
+  // Trigger on page load as well
+  revealOnScroll();
+</script>
+
 {% endblock %}
