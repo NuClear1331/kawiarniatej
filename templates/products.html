@@ -1,21 +1,26 @@
 {% extends "base.html" %}
-{% block title %}{{ (category or "Produkty") | title }} — Kawiarnia Tej{% endblock %}
+{% block title %}{{ (category or "Produkty") }} — Kawiarnia Tej{% endblock %}
+
 {% block content %}
 
-{# Accept multiple variable names, depending on your view #}
+{# Accept multiple variable names just in case #}
 {% set items = products or items or data or lista or katalog %}
 
-<h1 class="mb-4">{{ (category or "Produkty") | title }}</h1>
+<div class="d-flex align-items-center justify-content-between mb-3">
+  <h1 class="mb-0">{{ (category or "Produkty") }}</h1>
+  <a href="{{ url_for('zamowienie') }}" class="btn btn-success btn-sm go-checkout">Przejdź do koszyka</a>
+</div>
 
 {% if not items %}
   <div class="alert alert-info">
-    Brak pozycji do wyświetlenia. (Sprawdź, co przekazuje widok do <code>products.html</code>.)
+    Brak pozycji do wyświetlenia. (Sprawdź dane przekazywane do <code>products.html</code>.)
   </div>
 {% else %}
   <div class="row g-4">
     {% for item in items %}
     <div class="col-12 col-sm-6 col-lg-4">
       <div class="card menu-card h-100">
+        <!-- MEDIA -->
         <div class="menu-card-media">
           <img
             src="{{ item.image or item.img or item.photo or url_for('static', filename='img/placeholder.jpg') }}"
@@ -26,6 +31,8 @@
             <span class="menu-badge">{{ badge_txt }}</span>
           {% endif %}
         </div>
+
+        <!-- BODY -->
         <div class="card-body d-flex flex-column">
           <h5 class="card-title mb-1">{{ item.name or item.title or item.nazwa }}</h5>
           {% set desc_txt = item.desc or item.description or item.opis %}
@@ -33,18 +40,47 @@
             <p class="card-text text-muted-ink mb-3">{{ desc_txt }}</p>
           {% endif %}
 
-          <div class="mt-auto d-flex align-items-center justify-content-between">
-            <span class="price-pill">
-              {{ item.price or item.cena or item.price_pln or item.kwota }}
-            </span>
+          <!-- FOOT (price / variant / add) -->
+          <div class="mt-auto d-flex flex-column gap-2">
+            {% if item.variants %}
+              <!-- Variant selector for items like Sernik (12/6 porcji) -->
+              <div>
+                <label class="form-label small mb-1">Wybierz rozmiar:</label>
+                <select class="form-select form-select-sm variant-select">
+                  {% for v in item.variants %}
+                    <option value="{{ v.id }}" data-price="{{ v.price }}" data-label="{{ v.label }}">
+                      {{ v.label }} — {{ v.price }}
+                    </option>
+                  {% endfor %}
+                </select>
+              </div>
 
-            {# Keep your existing cart behavior. If you have a route with IDs, swap this button for an <a> to url_for(). #}
-            <button class="btn btn-primary btn-sm add-to-cart"
-                    data-id="{{ item.id if item.id is defined }}"
-                    data-name="{{ item.name or item.title or item.nazwa }}"
-                    data-price="{{ item.price or item.cena or item.price_pln or item.kwota }}">
-              Dodaj do koszyka
-            </button>
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="price-pill js-variant-price">
+                  {{ item.variants[0].price }}
+                </span>
+                <button class="btn btn-primary btn-sm add-to-cart"
+                        data-id="{{ item.id }}"
+                        data-name="{{ item.name }}"
+                        data-image="{{ item.image }}"
+                        data-has-variants="1">
+                  Dodaj do koszyka
+                </button>
+              </div>
+            {% else %}
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="price-pill">
+                  {{ item.price or item.cena or item.price_pln or item.kwota }}
+                </span>
+                <button class="btn btn-primary btn-sm add-to-cart"
+                        data-id="{{ item.id if item.id is defined }}"
+                        data-name="{{ item.name or item.title or item.nazwa }}"
+                        data-price="{{ item.price or item.cena or item.price_pln or item.kwota }}"
+                        data-image="{{ item.image or item.img or item.photo }}">
+                  Dodaj do koszyka
+                </button>
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>
