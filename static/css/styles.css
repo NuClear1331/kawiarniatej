@@ -4,11 +4,16 @@
 
 :root{
   /* Palette */
+  --bs-primary: #795548;           /* Główny kolor motywu – np. brąz kawowy */
+  --bs-primary-rgb: 121,85,72;     /* (Opcjonalnie RGB dla efektów przezroczystości) */
+  --bs-secondary: #6c757d;
+  --bs-light: #f8f9fa;
+  --bs-dark: #343a40;
   --bottle-green: #0a3b2f;       /* dimmed dark green */
   --bottle-green-600: #124c3c;   /* hover/active */
   --smoked-brown: #2e1b12;       /* backdrop */
   --smoked-brown-900: #22140e;   /* deeper banding */
-  --warm-bone: #f9f4e8;          /* warm bone white text */
+  --warm-bone: #f8f3e4 ;          /* warm bone white text */
   --accent-gold: #c4a25c;        /* subtle accent */
 
   /* Radii & shadows */
@@ -20,7 +25,7 @@
 
 /* Base */
 html, body{
-  font-family: "Lora", Georgia, serif;
+  font-family: 'Lato', sans-serif;
   color: var(--warm-bone);
   background: linear-gradient(180deg, var(--smoked-brown-900), var(--smoked-brown));
   line-height: 1.6;
@@ -127,6 +132,9 @@ img.rounded-3:hover{
 }
 .card .card-footer{
   border-top: 1px solid rgba(255,255,255,0.06);
+
+
+
 }
 
 /* clickable choice tiles */
@@ -506,4 +514,60 @@ body > main {
 footer {
   margin-top: auto;
 }
+/* Smooth hover transitions for interactive elements */
+a, button, .btn {
+    transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+.navbar-nav .nav-link {
+    padding: .5rem 1rem;
+    font-weight: 500;
+}
+.navbar-nav .nav-link:hover {
+    color: var(--bs-primary) !important;      /* Podkreślenie kolorem firmowym */
+    text-decoration: none;
+    border-bottom: 2px solid var(--bs-primary); /* Dekoracyjna kreska pod linkiem */
+}
+.section-title {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding-bottom: .3rem;
+}
+.section-title::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 60%;
+    max-width: 120px;
+    height: 3px;
+    background-color: var(--bs-primary);
+}
+.btn-primary {
+    background-color: var(--bs-primary) !important;  /* główny kolor przycisku */
+    border-color: var(--bs-primary) !important;
+.btn-primary:hover, .btn-primary:focus {
+    background-color: #6b4a3c !important; /* trochę ciemniejszy brąz przy hover */
+    border-color: #6b4a3c !important;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+}
+.btn {
+    border-radius: .3rem;  /* lekko bardziej zaokrąglone narożniki */
+    /* (Transition już dodany globalnie wcześniej) */
+}
 
+}
+.card-img-top {
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+    /* obrazki kart automatycznie zaokrąglone w rogach żeby pasowały do karty */
+}
+.gallery-img:hover {
+    transform: scale(1.03);
+    transition: transform .3s ease;
+    cursor: pointer;
+}
