@@ -4,16 +4,16 @@
 <h2 class="mb-4">Ciasta i Chleby</h2>
 <div class="row g-3">
   <div class="col-12 col-md-6">
-    <a class="choice-tile d-block rounded-3 border p-4 text-center bg-bone hover-shadow" href="{{ url_for('chleby') }}">
-      <div class="display-6">🥖</div>
-      <h3 class="mt-2">Chleby</h3>
-    </a>
+    <a class="choice-tile card p-4 h-100" href="{{ url_for('products', category='piekarnicze') }}">
+  <h3 class="mb-1">Wyroby piekarnicze</h3>
+  <p class="mb-0 text-muted-ink">Chleby…</p>
+</a>
   </div>
   <div class="col-12 col-md-6">
-    <a class="choice-tile d-block rounded-3 border p-4 text-center bg-bone hover-shadow" href="{{ url_for('ciasta') }}">
-      <div class="display-6">🍰</div>
-      <h3 class="mt-2">Ciasta</h3>
-    </a>
+    <a class="choice-tile card p-4 h-100" href="{{ url_for('products', category='cukiernicze') }}">
+  <h3 class="mb-1">Wyroby cukiernicze</h3>
+  <p class="mb-0 text-muted-ink">Ciasta, tarty, babeczki…</p>
+</a>
   </div>
 </div>
 {% endblock %}

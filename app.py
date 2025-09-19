@@ -17,17 +17,40 @@ mail = Mail(app)
 
 # Sample products (placeholder images via picsum)
 BREADS = [
-    {"id": 1, "name": "Chleb Wiejski", "image": "https://picsum.photos/seed/chleb1/800/600"},
-    {"id": 2, "name": "Chleb Orkiszowy", "image": "https://picsum.photos/seed/chleb2/800/600"},
-    {"id": 3, "name": "Bagietka Tradycyjna", "image": "https://picsum.photos/seed/chleb3/800/600"},
-    {"id": 4, "name": "Chleb Żytni", "image": "https://picsum.photos/seed/chleb4/800/600"},
+    {
+        "id": "chleb-zytni",
+        "name": "Chleb żytni na zakwasie",
+        "desc": "Długo fermentowany, chrupiąca skórka.",
+        "price": 12.90,
+        "image": "/static/img/bakery/chleb-zytni.jpg",
+        "badge": "Na zakwasie"
+    },
+    {
+        "id": "bagietka",
+        "name": "Bagietka pszenna",
+        "desc": "Lekka, złocista, idealna do kanapek.",
+        "price": 6.50,
+        "image": "/static/img/bakery/bagietka.jpg"
+    },
+    # ← wkleję tu Twoją pełną listę po otrzymaniu .docx/.pdf/tekstu
 ]
 
 CAKES = [
-    {"id": 101, "name": "Sernik Klasyczny", "image": "https://picsum.photos/seed/ciasto1/800/600"},
-    {"id": 102, "name": "Szarlotka Domowa", "image": "https://picsum.photos/seed/ciasto2/800/600"},
-    {"id": 103, "name": "Brownie Czekoladowe", "image": "https://picsum.photos/seed/ciasto3/800/600"},
-    {"id": 104, "name": "Tarta Cytrynowa", "image": "https://picsum.photos/seed/ciasto4/800/600"},
+    {
+        "id": "sernik-krakowski",
+        "name": "Sernik krakowski",
+        "desc": "Klasyczny, z kratką, kremowy środek.",
+        "price": 15.00,
+        "image": "/static/img/pastry/sernik.jpg",
+        "badge": "Klasyk"
+    },
+    {
+        "id": "tarta-malinowa",
+        "name": "Tarta malinowa",
+        "desc": "Kruche ciasto, krem waniliowy, świeże maliny.",
+        "price": 17.00,
+        "image": "/static/img/pastry/tarta-malinowa.jpg"
+    },
 ]
 
 def all_products():
@@ -40,7 +63,7 @@ def inject_nav():
             {"href": url_for('home'), "label": "Strona główna"},
             {"href": url_for('menu'), "label": "Menu"},
             {"href": url_for('keto'), "label": "Keto"},
-            {"href": url_for('ciasta_i_chleby'), "label": "Ciasta i Chleby"},
+            {"href": url_for('ciasta_i_chleby'), "label": "Zamów"},
             {"href": url_for('kontakt'),"label": "Kontakt", "href": "/kontakt"},
         ]
     }
