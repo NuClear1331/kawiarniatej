@@ -40,10 +40,7 @@
             <p class="card-text text-muted-ink mb-3">{{ desc_txt }}</p>
           {% endif %}
           <!--MACROS-->
-          {% set desc_txt = item.desc or item.description or item.opis %}
-          {% if desc_txt %}
-            <p class="card-text text-muted-ink mb-2">{{ desc_txt }}</p>
-          {% endif %}
+          
 
           {# Nutri/macros line #}
           {% set m = item.macros %}
