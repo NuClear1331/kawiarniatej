@@ -311,6 +311,62 @@ MENU_SECTIONS = [
             {"name": "Espresso tonic",              "price": "16 zł"},
         ],
     },
+    {
+        "title": "Herbaty",
+        "items": [
+            {"name": "Biała",                       "price": "12 zł"},
+            {"name": "Zielona",                     "price": "12 zł"},
+            {"name": "Czarna",                      "price": "12 zł"},
+            {"name": "Owocowa",                     "price": "12 zł"},
+            {"name": "Miętowa",                     "price": "12 zł"},
+        ],
+    },
+    {
+        "title": "Herbaty z owocami",
+        "items": [
+            {"name": "Lipa i Malina",                "price": "20 zł"},
+            {"name": "Sencha Sakura",                "price": "20 zł"},
+            {"name": "Earl Grey Blue ",              "price": "20 zł"},
+            {"name": "Rajski Ptak",                  "price": "20 zł"},
+            {"name": "Coco Chanel",                  "price": "20 zł"},
+            {"name": "Mango Tango",                  "price": "20 zł"},
+        ],
+    },
+    {
+        "title": "Matcha",
+        "items": [
+            {"name": "Matcha",                       "price": "15 zł"},
+            {"name": "Matcha Blue",                  "price": "15 zł"},
+            {"name": "Matcha Latte",                 "price": "18 zł"},
+            {"name": "Matcha Latte Blue",            "price": "18 zł"},
+            
+        ],
+    },
+    {
+        "title": "Zimne napoje",
+        "items": [
+            {"name": "Woda niegazowana",              "price": "7 zł"},
+            {"name": "Woda gazowana",                 "price": "7 zł"},
+            {"name": "Sok pomarańczowy",              "price": "8 zł"},
+            {"name": "Sok jabłkowy",                  "price": "8 zł"},
+            {"name": "Sok Bracia Sadownicy",          "price": "8,50 zł"},
+            {"name": "Coca-Cola",                     "price": "8 zł"},
+            {"name": "Fanta",                         "price": "8 zł"},
+            {"name": "Sprite",                        "price": "8 zł"},
+            {"name": "Sok świeżo wyciskany (pomarńczowy, grejprfutowy, mix)",       "price": "19 zł"},
+            
+        ],
+    },
+    {
+        "title": "Desery",
+        "items": [
+            {"name": "Gorąca czekolada",              "price": "14 zł"},
+            {"name": "Gorąca czekolada z dodatkami",  "price": "20 zł"},
+            {"name": "Deser lodowy (3 gałki lodów: waniliowe, czekoladowe, śmietankowe; sos czekoladowy; bita śmietana; posypka Kit-Kat)",      "price": "20 zł"},
+            
+        ],
+    },
+    
     # Dodasz tu kolejne sekcje, gdy otrzymamy więcej pozycji (np. Herbaty, Lemoniady, Przekąski...).
 ]
 
