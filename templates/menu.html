@@ -2,52 +2,36 @@
 {% block title %}Menu — Kawiarnia Tej{% endblock %}
 {% block content %}
 
-{% set items =
-      menu_items
-      or menu
-      or items
-      or menu_list
-      or data
-      or products
-%}
-
 <h1 class="mb-4">Menu</h1>
 
-{% if not items %}
-  <div class="alert alert-info">
-    Brak pozycji w menu do wyświetlenia. (Sprawdź zmienną przekazywaną w widoku <code>/menu</code>.)
-  </div>
+{% set sections = sections or menu_sections or data %}
+
+{% if not sections %}
+  <div class="alert alert-info">Menu w przygotowaniu. Zapraszamy wkrótce!</div>
 {% else %}
   <div class="row g-4">
-    {% for item in items %}
-    <div class="col-12 col-sm-6 col-lg-4">
-      <div class="card menu-card h-100">
-        <div class="menu-card-media">
-          <img
-            src="{{ item.image or item.img or item.photo or url_for('static', filename='img/placeholder.jpg') }}"
-            class="menu-card-img"
-            alt="{{ item.name or item.title or item.nazwa or 'Produkt' }}">
-          {% set badge_txt = item.badge or item.tag or item.label %}
-          {% if badge_txt %}
-            <span class="menu-badge">{{ badge_txt }}</span>
-          {% endif %}
-        </div>
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title mb-1">{{ item.name or item.title or item.nazwa }}</h5>
-          {% set desc_txt = item.desc or item.description or item.opis %}
-          {% if desc_txt %}
-            <p class="card-text text-muted-ink mb-3">{{ desc_txt }}</p>
-          {% endif %}
-
-          <div class="mt-auto d-flex align-items-center justify-content-between">
-            <span class="price-pill">
-              {{ item.price or item.cena or item.price_pln or item.kwota }}
-            </span>
-            <button class="btn btn-primary btn-sm">Zamów</button>
+    {% for sec in sections %}
+      <div class="col-12 col-lg-6">
+        <section class="h-100">
+          <h3 class="mb-3">{{ sec.title }}</h3>
+          <div class="card section-elevated p-2 p-md-3 h-100">
+            <ul class="list-unstyled mb-0">
+              {% for it in sec.items %}
+                <li class="menu-line d-flex align-items-baseline justify-content-between py-2 py-md-2">
+                  <div class="menu-line-name">
+                    {{ it.name }}
+                    {% if it.desc %}
+                      <div class="menu-line-desc small text-muted-ink">{{ it.desc }}</div>
+                    {% endif %}
+                  </div>
+                  <div class="menu-line-dots flex-fill mx-2"><span aria-hidden="true"></span></div>
+                  <div class="menu-line-price fw-semibold">{{ it.price }}</div>
+                </li>
+              {% endfor %}
+            </ul>
           </div>
-        </div>
+        </section>
       </div>
-    </div>
     {% endfor %}
   </div>
 {% endif %}

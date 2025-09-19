@@ -280,6 +280,43 @@ CATEGORY_MAP = {
         "items": PASTRY_ITEMS
     },
 }
+# --- MENU (from menupdf.pdf) ---
+MENU_SECTIONS = [
+    {
+        "title": "Kawy",
+        "items": [
+            {"name": "Espresso",                      "price": "9 zł"},
+            {"name": "Podwójne espresso",            "price": "14 zł"},
+            {"name": "Espresso macchiato",           "price": "11 zł"},
+            {"name": "Macchiato",                    "price": "15 zł"},
+            {"name": "Flat white",                   "price": "13 zł"},
+            {"name": "Cappuccino (małe)",            "price": "13 zł"},
+            {"name": "Cappuccino (duże)",            "price": "16 zł"},
+            {"name": "Latte",                        "price": "15 zł"},
+            {"name": "Latte smakowe",                "price": "18 zł"},
+            {"name": "Americano",                    "price": "13 zł"},
+            {"name": "Kawa z dolewką – przelew",     "price": "10 zł"},
+            {"name": "Kawa bezkofeinowa",            "price": "13 zł"},
+            {"name": "Kawa rozpuszczalna",           "price": "10 zł"},
+            {"name": "Keto kawa – „kuloodporna”",    "price": "19 zł"},
+        ],
+    },
+    {
+        "title": "Kawy na zimno",
+        "items": [
+            {"name": "Iced latte",                  "price": "13 zł"},
+            {"name": "Kawa z lodami",               "price": "18 zł"},
+            {"name": "Kawa z „Coffee Ice Cubes”",   "price": "14 zł"},
+            {"name": "Caffè affogato",              "price": "13 zł"},
+            {"name": "Espresso tonic",              "price": "16 zł"},
+        ],
+    },
+    # Dodasz tu kolejne sekcje, gdy otrzymamy więcej pozycji (np. Herbaty, Lemoniady, Przekąski...).
+]
+
+# Ensure your /menu view sends MENU_SECTIONS to the template
+
+
 
 def all_products():
     return BAKERY_ITEMS + PASTRY_ITEMS
@@ -317,13 +354,7 @@ def home():
 
 @app.route("/menu")
 def menu():
-    sample_menu = [
-        {"name": "Espresso", "desc": "Podwójny shot, 60 ml", "price": "9 PLN"},
-        {"name": "Latte", "desc": "Kawa mleczna, różne mleka", "price": "14 PLN"},
-        {"name": "Cappuccino", "desc": "Spienione mleko i espresso", "price": "13 PLN"},
-        {"name": "Herbata Zielona", "desc": "Liściasta, 400 ml", "price": "10 PLN"},
-    ]
-    return render_template("menu.html", items=sample_menu)
+    return render_template("menu.html", sections=MENU_SECTIONS)
 
 @app.route("/keto")
 def keto():

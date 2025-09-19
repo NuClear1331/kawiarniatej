@@ -435,4 +435,17 @@ a:focus{
   line-height: 1.4;
   backdrop-filter: blur(2px);
 }
-
+/* Dotted leaders + responsive widths */
+.menu-line-dots{
+  position: relative;
+  height: 1em;
+  overflow: hidden;
+}
+.menu-line-dots span{
+  display: block;
+  height: 1px;
+  border-bottom: 1px dotted rgba(255,255,255,.25);
+  transform: translateY(-0.2em);
+}
+.menu-line-name{ max-width: 65%; }
+@media (max-width: 576px){ .menu-line-name{ max-width: 60%; } }
