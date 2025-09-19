@@ -471,3 +471,24 @@ a:focus{
 }
 .menu-line-name{ max-width: 65%; }
 @media (max-width: 576px){ .menu-line-name{ max-width: 60%; } }
+/* Center and underline section titles */
+.menu-card-header h3 {
+  text-align: center;
+  font-family: 'Playfair Display', serif; /* keeps it classy */
+  font-weight: 600;
+  font-size: 1.6rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+  color: #f8f5f0; /* warm bony white */
+}
+
+/* Decorative underline with shadow */
+.menu-card-header h3::after {
+  content: "";
+  display: block;
+  width: 60%;
+  margin: 0.5rem auto 0 auto;
+  border-bottom: 3px solid #4a5a4f; /* dimmed bottle green */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
