@@ -23,25 +23,25 @@
   <!-- Optional favicon -->
   {# <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}"> #}
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100" style="padding-top: 64px;">
   <header class="mb-3">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-bottle shadow-sm fixed-tops">
-      <div class="container">
-        <a class="navbar-brand fw-semibold" href="{{ url_for('home') }}">Kawiarnia Tej</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="nav">
-          <ul id="main-nav" class="navbar-nav ms-auto mb-2 mb-lg-0">
-            {% for item in NAV %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ item.href }}">{{ item.label }}</a>
-            </li>
-            {% endfor %}
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="{{ url_for('home') }}">Kawiarnia Tej</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('menu') }}">Menu</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('keto') }}">Keto</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('ciasta_i_chleby') }}">Zamów</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ url_for('kontakt') }}">Kontakt</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
   </header>
 
   {% with messages = get_flashed_messages(with_categories=true) %}
