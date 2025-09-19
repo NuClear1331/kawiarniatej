@@ -449,3 +449,26 @@ a:focus{
 }
 .menu-line-name{ max-width: 65%; }
 @media (max-width: 576px){ .menu-line-name{ max-width: 60%; } }
+/* Make each grid cell stretch so all cards line up cleanly */
+.row.g-4 > [class*="col-"] { display: flex; }
+.row.g-4 > [class*="col-"] > section { display: flex; width: 100%; }
+
+/* Title inside the card gets gentle separation */
+.menu-card-header h3{
+  line-height: 1.2;
+}
+
+/* Dotted leaders + responsive widths (keep or add if missing) */
+.menu-line-dots{
+  position: relative;
+  height: 1em;
+  overflow: hidden;
+}
+.menu-line-dots span{
+  display: block;
+  height: 1px;
+  border-bottom: 1px dotted rgba(255,255,255,.25);
+  transform: translateY(-0.2em);
+}
+.menu-line-name{ max-width: 65%; }
+@media (max-width: 576px){ .menu-line-name{ max-width: 60%; } }

@@ -11,24 +11,28 @@
 {% else %}
   <div class="row g-4">
     {% for sec in sections %}
-      <div class="col-12 col-lg-6">
-        <section class="h-100">
-          <h3 class="mb-3">{{ sec["title"] }}</h3>
-          <div class="card section-elevated p-2 p-md-3 h-100">
-            <ul class="list-unstyled mb-0">
-              {% for it in sec["items"] %}
-                <li class="menu-line d-flex align-items-baseline justify-content-between py-2 py-md-2">
-                  <div class="menu-line-name">
-                    {{ it["name"] }}
-                    {% if it.get("desc") %}
-                      <div class="menu-line-desc small text-muted-ink">{{ it["desc"] }}</div>
-                    {% endif %}
-                  </div>
-                  <div class="menu-line-dots flex-fill mx-2"><span aria-hidden="true"></span></div>
-                  <div class="menu-line-price fw-semibold">{{ it["price"] }}</div>
-                </li>
-              {% endfor %}
-            </ul>
+      <div class="col-12 col-lg-6 d-flex">
+        <section class="w-100">
+          <div class="card section-elevated h-100">
+            <div class="card-header menu-card-header bg-transparent border-0 pt-3 pb-0">
+              <h3 class="mb-2">{{ sec["title"] }}</h3>
+            </div>
+            <div class="card-body pt-2">
+              <ul class="list-unstyled mb-0">
+                {% for it in sec["items"] %}
+                  <li class="menu-line d-flex align-items-baseline justify-content-between py-2 py-md-2">
+                    <div class="menu-line-name">
+                      {{ it["name"] }}
+                      {% if it.get("desc") %}
+                        <div class="menu-line-desc small text-muted-ink">{{ it["desc"] }}</div>
+                      {% endif %}
+                    </div>
+                    <div class="menu-line-dots flex-fill mx-2"><span aria-hidden="true"></span></div>
+                    <div class="menu-line-price fw-semibold">{{ it["price"] }}</div>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
           </div>
         </section>
       </div>
