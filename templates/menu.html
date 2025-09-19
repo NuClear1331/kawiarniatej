@@ -2,7 +2,7 @@
 {% block title %}Menu — Kawiarnia Tej{% endblock %}
 {% block content %}
 
-<h1 class="mb-4">Menu</h1>
+<h1 class="mb-4 section-title">Menu</h1>
 
 {% set sections = sections or menu_sections or data %}
 
@@ -15,16 +15,16 @@
         <section class="w-100">
           <div class="card section-elevated h-100">
             <div class="card-header menu-card-header bg-transparent border-0 pt-3 pb-0">
-              <h3 class="mb-2">{{ sec["title"] }}</h3>
+              <h3 class="mb-2" data-aos="fade-up" data-aos-duration="800">{{ sec["title"] }}</h3>
             </div>
             <div class="card-body pt-2">
               <ul class="list-unstyled mb-0">
                 {% for it in sec["items"] %}
                   <li class="menu-line d-flex align-items-baseline justify-content-between py-2 py-md-2">
-                    <div class="menu-line-name">
+                    <div class="menu-line-name" data-aos="fade-up" data-aos-delay="200">
                       {{ it["name"] }}
                       {% if it.get("desc") %}
-                        <div class="menu-line-desc small text-muted-ink">{{ it["desc"] }}</div>
+                        <div class="menu-line-desc small text-muted-ink" data-aos="fade-up" data-aos-delay="200">{{ it["desc"] }}</div>
                       {% endif %}
                     </div>
                     <div class="menu-line-dots flex-fill mx-2"><span aria-hidden="true"></span></div>
