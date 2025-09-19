@@ -377,12 +377,52 @@ MENU_SECTIONS = [
 def all_products():
     return BAKERY_ITEMS + PASTRY_ITEMS
 
+def get_all_products():
+    """Return a flat list of ALL products in the current order (bakery + pastry)."""
+    # If you already have a function named all_products(), reuse it
+    # but ensure it returns a *list* of product dicts in the current order.
+    return all_products()
+
+def get_products_by_id():
+    """Return {product_id:int -> product:dict} map based on current list order."""
+    products = get_all_products()
+    return {i: products[i] for i in range(len(products))}
+
+
+@app.before_request
+def sanitize_cart_ids():
+    """Ensure session cart only contains valid integer IDs that exist now."""
+    cart = session.get('cart', [])
+    if not isinstance(cart, list):
+        session['cart'] = []
+        return
+    # coerce to ints and drop junk
+    cleaned = []
+    for pid in cart:
+        try:
+            cleaned.append(int(pid))
+        except (TypeError, ValueError):
+            continue
+    valid_ids = set(get_products_by_id().keys())
+    cleaned = [pid for pid in cleaned if pid in valid_ids]
+    if cleaned != cart:
+        session['cart'] = cleaned  # write back only if changed
+
+
+
 @app.context_processor
 def inject_products():
     try:
         return {"ALL_PRODUCTS": all_products()}
     except Exception:
         return {"ALL_PRODUCTS": []}
+    
+def inject_products_map():
+    """Expose PRODUCTS_BY_ID to all templates."""
+    try:
+        return {"PRODUCTS_BY_ID": get_products_by_id()}
+    except Exception:
+        return {"PRODUCTS_BY_ID": {}}    
 def inject_nav():
     return {
         "NAV": [
