@@ -1,4 +1,4 @@
-// static/js/cart.js (v6) — floating cart pill with clear button
+// static/js/cart.js (v7) — variants support + floating pill
 
 const CART_KEY = 'kt_cart_v1';
 
@@ -15,46 +15,38 @@ function formatPLN(v){
 
 function getCart(){ try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
 function saveCart(items){ localStorage.setItem(CART_KEY, JSON.stringify(items)); updateBadge(); }
-function addItem(item){
-  const cart = getCart();
-  const keyMatch = x => (item.id && x.id && String(x.id)===String(item.id)) || (x.name===item.name);
-  const i = cart.findIndex(keyMatch);
-  if(i >= 0){ cart[i].qty += item.qty || 1; }
-  else { cart.push({ id: item.id || null, name: item.name || 'Produkt', price: parsePrice(item.price), image: item.image || null, qty: item.qty || 1 }); }
-  saveCart(cart);
-}
-function clearCart(){
-  localStorage.removeItem(CART_KEY);
-  updateBadge();
-  // Tiny toast feedback on clear
-  showToast('Koszyk wyczyszczony');
-}
+function cartCount(){ return getCart().reduce((s,i)=> s + (i.qty||1), 0); }
+function clearCart(){ localStorage.removeItem(CART_KEY); updateBadge(); showToast('Koszyk wyczyszczony'); }
 
-function cartCount(){
-  return getCart().reduce((s,i)=> s + (i.qty||1), 0);
+function addItem(item){
+  // item: { id, name, price, image, qty, variantId?, variantLabel? }
+  const cart = getCart();
+  const same = x =>
+    (item.id && x.id && String(x.id)===String(item.id)) &&
+    ((item.variantId || null) === (x.variantId || null));
+  const i = cart.findIndex(same);
+  if(i >= 0){ cart[i].qty += item.qty || 1; }
+  else { cart.push({...item, qty: item.qty || 1}); }
+  saveCart(cart);
 }
 
 function updateBadge(){
-  const count = cartCount();
-  document.querySelectorAll('[data-cart-count]').forEach(el => el.textContent = count);
+  document.querySelectorAll('[data-cart-count]').forEach(el => el.textContent = cartCount());
 }
 
-/* ------- Floating pill ------- */
+/* Floating cart pill with clear */
 function mountFloatingCart(){
   if(document.querySelector('.cart-fab')) { updateBadge(); return; }
-
   const wrap = document.createElement('div');
   wrap.className = 'cart-fab';
   wrap.setAttribute('role','region');
   wrap.setAttribute('aria-label','Koszyk');
 
-  // Main area → go to checkout
   const main = document.createElement('a');
   main.className = 'cart-fab-main';
   main.href = '/zamowienie';
   main.innerHTML = `🧺 <span class="label">Koszyk</span> <span class="count" data-cart-count>0</span>`;
 
-  // Clear button
   const clear = document.createElement('button');
   clear.type = 'button';
   clear.className = 'cart-fab-clear';
@@ -72,7 +64,7 @@ function mountFloatingCart(){
   });
 }
 
-/* ------- Order page helpers ------- */
+/* Checkout form population */
 function populateOrderForm(){
   const field = document.getElementById('cart_json');
   const wrap  = document.getElementById('cart_summary');
@@ -89,8 +81,9 @@ function populateOrderForm(){
         const qty = i.qty || 1;
         const price = parsePrice(i.price);
         const line = qty * price;
+        const name = i.variantLabel ? `${i.name} (${i.variantLabel})` : i.name;
         return `<div class="d-flex justify-content-between border-bottom border-opacity-25 py-1">
-                  <span>${qty}× ${i.name || 'Produkt'}</span>
+                  <span>${qty}× ${name}</span>
                   <span>${formatPLN(line)}</span>
                 </div>`;
       }).join('');
@@ -102,7 +95,7 @@ function populateOrderForm(){
   }
 }
 
-/* ------- Tiny toast ------- */
+/* Tiny toast */
 function showToast(text){
   const t = document.createElement('div');
   t.className = 'kt-toast';
@@ -115,18 +108,37 @@ function showToast(text){
   }, 1300);
 }
 
-/* ------- Events ------- */
+/* Events */
 document.addEventListener('click', (e)=>{
   const btn = e.target.closest('.add-to-cart');
   if(!btn) return;
-
   e.preventDefault();
+
+  const card = btn.closest('.card, .menu-card') || document;
+  const select = card.querySelector('.variant-select');
+  let variantId = null, variantLabel = null, priceVal = null;
+
+  if(select){
+    const opt = select.options[select.selectedIndex];
+    variantId = opt.value;
+    variantLabel = opt.dataset.label || opt.textContent.trim();
+    priceVal = opt.dataset.price || opt.textContent;
+    // update visible price pill if present
+    const pill = card.querySelector('.js-variant-price');
+    if(pill) pill.textContent = priceVal;
+  } else {
+    priceVal = btn.dataset.price || btn.getAttribute('data-price') || '0';
+  }
+
   const name  = btn.dataset.name  || btn.getAttribute('data-name')  || 'Produkt';
-  const price = parsePrice(btn.dataset.price || btn.getAttribute('data-price') || '0');
   const id    = btn.dataset.id || btn.getAttribute('data-id') || null;
   const img   = btn.dataset.image || btn.getAttribute('data-image') || null;
 
-  addItem({ id, name, price, image: img, qty: 1 });
+  addItem({
+    id, name, image: img,
+    price: priceVal,
+    variantId, variantLabel
+  });
 
   const old = btn.textContent;
   btn.classList.add('disabled');
@@ -155,7 +167,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   updateBadge();
   populateOrderForm();
 
-  // Clear after successful order (?order=ok)
+  // Auto-clear after success (?order=ok)
   const qs = new URLSearchParams(window.location.search);
   if(qs.get('order') === 'ok'){ clearCart(); }
 });

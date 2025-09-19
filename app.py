@@ -176,51 +176,69 @@ PASTRY_ITEMS = [
     # --- Serniki (12/6 porcji) ---
     {
         "id": "sernik-pistacjowy",
-        "name": "Sernik pistacjowy (12 / 6 porcji)",
+        "name": "Sernik pistacjowy",
         "desc": "Śr. 26 cm przy całym.",
-        "price": "180 zł / 90 zł",
         "image": "/static/img/pastry/sernik-pistacjowy.jpg",
-        "badge": "Sernik"
+        "badge": "Sernik",
+        "variants": [
+            {"id": "12", "label": "12 porcji", "price": "180 zł"},
+            {"id": "6",  "label": "6 porcji",  "price": "90 zł"}
+        ]
     },
     {
         "id": "sernik-migdalowy-spod",
-        "name": "Sernik na migdałowym spodzie (12 / 6 porcji)",
+        "name": "Sernik na migdałowym spodzie",
         "desc": "Śr. 26 cm przy całym.",
-        "price": "120 zł / 60 zł",
         "image": "/static/img/pastry/sernik-migdalowy-spod.jpg",
-        "badge": "Sernik"
+        "badge": "Sernik",
+        "variants": [
+            {"id": "12", "label": "12 porcji", "price": "120 zł"},
+            {"id": "6",  "label": "6 porcji",  "price": "60 zł"}
+        ]
     },
     {
         "id": "sernik-borowki-kruszonka",
-        "name": "Sernik z borówkami i kruszonką (12 / 6 porcji)",
+        "name": "Sernik z borówkami i kruszonką",
         "desc": "Śr. 26 cm przy całym.",
-        "price": "180 zł / 90 zł",
         "image": "/static/img/pastry/sernik-borowki-kruszonka.jpg",
-        "badge": "Sernik"
+        "badge": "Sernik",
+        "variants": [
+            {"id": "12", "label": "12 porcji", "price": "180 zł"},
+            {"id": "6",  "label": "6 porcji",  "price": "90 zł"}
+        ]
     },
     {
         "id": "sernik-kokosowy",
-        "name": "Sernik kokosowy (12 / 6 porcji)",
+        "name": "Sernik kokosowy",
         "desc": "Śr. 26 cm przy całym.",
-        "price": "120 zł / 60 zł",
         "image": "/static/img/pastry/sernik-kokosowy.jpg",
-        "badge": "Sernik"
+        "badge": "Sernik",
+        "variants": [
+            {"id": "12", "label": "12 porcji", "price": "120 zł"},
+            {"id": "6",  "label": "6 porcji",  "price": "60 zł"}
+        ]
     },
     {
         "id": "sernik-kawowy",
-        "name": "Sernik kawowy (12 / 6 porcji)",
+        "name": "Sernik kawowy",
         "desc": "Śr. 26 cm przy całym.",
-        "price": "100 zł / 50 zł",
         "image": "/static/img/pastry/sernik-kawowy.jpg",
-        "badge": "Sernik"
+        "badge": "Sernik",
+        "variants": [
+            {"id": "12", "label": "12 porcji", "price": "100 zł"},
+            {"id": "6",  "label": "6 porcji",  "price": "50 zł"}
+        ]
     },
     {
         "id": "sernik-zebra",
-        "name": "Sernik „zebra” (12 / 6 porcji)",
+        "name": "Sernik „zebra”",
         "desc": "Śr. 26 cm przy całym.",
-        "price": "120 zł / 60 zł",
         "image": "/static/img/pastry/sernik-zebra.jpg",
-        "badge": "Sernik"
+        "badge": "Sernik",
+        "variants": [
+            {"id": "12", "label": "12 porcji", "price": "120 zł"},
+            {"id": "6",  "label": "6 porcji",  "price": "60 zł"}
+        ]
     },
 ]
 CATEGORY_MAP = {
@@ -367,11 +385,14 @@ def zamowienie():
     total = 0.0
     for item in cart:
         name = item.get("name", "Produkt")
+        variant_label = item.get("variantLabel")
+        if variant_label:
+            name = f"{name} ({variant_label})"
         qty  = int(item.get("qty", 1) or 1)
-        price = float(item.get("price", 0) or 0)
+        price = float(str(item.get("price", 0)).replace(",", ".").split()[0] or 0)
         line_total = qty * price
         total += line_total
-        lines.append(f"- {qty} × {name}: {pln(line_total)}")
+        lines.append(f"- {qty} × {name}: {line_total:.2f} zł")
 
     order_summary = "\n".join(lines) if lines else "(Koszyk pusty)"
     total_line = f"Suma: {pln(total)}"
