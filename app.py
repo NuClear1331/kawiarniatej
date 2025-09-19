@@ -18,38 +18,209 @@ mail = Mail(app)
 # Sample products (placeholder images via picsum)
 BAKERY_ITEMS = [
     {
-        "id": "chleb-zytni",
-        "name": "Chleb żytni na zakwasie",
-        "desc": "Długo fermentowany, chrupiąca skórka.",
-        "price": 12.90,
-        "image": "/static/img/bakery/chleb-zytni.jpg",
-        "badge": "Na zakwasie"
+        "id": "chleb-maslo-orzechowe",
+        "name": "Chleb z masła orzechowego",
+        "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
+        "price": "19 zł",
+        "image": "/static/img/bakery/chleb-maslo-orzechowe.jpg",
+        "badge": "Keto"
     },
     {
-        "id": "bagietka",
-        "name": "Bagietka pszenna",
-        "desc": "Lekka, złocista, idealna do kanapek.",
-        "price": 6.50,
-        "image": "/static/img/bakery/bagietka.jpg"
+        "id": "chleb-siemie-lniane",
+        "name": "Chleb z siemienia lnianego",
+        "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
+        "price": "13 zł",
+        "image": "/static/img/bakery/chleb-siemie-lniane.jpg",
+        "badge": "Keto"
     },
-    # ← wkleję tu Twoją pełną listę po otrzymaniu .docx/.pdf/tekstu
+    {
+        "id": "chleb-cebulka-niedzwiedzi",
+        "name": "Chleb z suszoną cebulką i czosnkiem niedźwiedzim",
+        "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
+        "price": "22 zł",
+        "image": "/static/img/bakery/chleb-cebulka-czosnek-niedzwiedzi.jpg",
+        "badge": "Aromatyczny"
+    },
+    {
+        "id": "chleb-mascarpone",
+        "name": "Chleb na bazie serka mascarpone",
+        "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
+        "price": "20 zł",
+        "image": "/static/img/bakery/chleb-mascarpone.jpg",
+        "badge": "Keto"
+    },
+    {
+        "id": "chleb-majonez",
+        "name": "Chleb na bazie majonezu",
+        "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
+        "price": "20 zł",
+        "image": "/static/img/bakery/chleb-majonez.jpg",
+        "badge": "Keto"
+    },
+    {
+        "id": "bulki-lnianie-3",
+        "name": "Bułki z siemienia lnianego (3 szt.)",
+        "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
+        "price": "10 zł / 3 szt",
+        "image": "/static/img/bakery/bulki-lniane.jpg",
+        "badge": "Pakiet"
+    },
+    {
+        "id": "bulki-migdalowe-3",
+        "name": "Bułki migdałowe (3 szt.)",
+        "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
+        "price": "10 zł / 3 szt",
+        "image": "/static/img/bakery/bulki-migdalowe.jpg",
+        "badge": "Pakiet"
+    },
 ]
+
 
 PASTRY_ITEMS = [
     {
-        "id": "sernik-krakowski",
-        "name": "Sernik krakowski",
-        "desc": "Klasyczny, z kratką, kremowy środek.",
-        "price": 15.00,
-        "image": "/static/img/pastry/sernik.jpg",
-        "badge": "Klasyk"
+        "id": "keto-brownie",
+        "name": "Keto brownie",
+        "price": "120 zł",
+        "image": "/static/img/pastry/keto-brownie.jpg",
+        "badge": "Keto"
     },
     {
-        "id": "tarta-malinowa",
-        "name": "Tarta malinowa",
-        "desc": "Kruche ciasto, krem waniliowy, świeże maliny.",
-        "price": 17.00,
-        "image": "/static/img/pastry/tarta-malinowa.jpg"
+        "id": "keto-brownie-orzech",
+        "name": "Keto brownie z masłem orzechowym i orzechami",
+        "price": "140 zł",
+        "image": "/static/img/pastry/keto-brownie-orzech.jpg",
+        "badge": "Keto"
+    },
+    {
+        "id": "keto-tarta-jagodowa",
+        "name": "Keto tarta z owocami jagodowymi i kremem mascarpone-śmietana",
+        "price": "80 zł",
+        "image": "/static/img/pastry/keto-tarta-jagodowa.jpg",
+        "badge": "Keto"
+    },
+    {
+        "id": "babeczki-tluszczowe",
+        "name": "Babeczki tłuszczowe",
+        "desc": "Min. 3 szt.",
+        "price": "7 zł / szt",
+        "image": "/static/img/pastry/babeczki-tluszczowe.jpg",
+        "badge": "Min. 3"
+    },
+    {
+        "id": "ciastka-maslo-orzechowe-slonecznik",
+        "name": "Ciastka z masła orzechowego ze słonecznikiem",
+        "price": "10 zł / 2 szt",
+        "image": "/static/img/pastry/ciastka-orzech-slonecznik.jpg"
+    },
+    {
+        "id": "ciastka-orzech-czekolada",
+        "name": "Ciastka orzechowe z kawałkami czekolady",
+        "price": "14 zł / 2 szt",
+        "image": "/static/img/pastry/ciastka-orzech-czekolada.jpg"
+    },
+    {
+        "id": "ciastka-pistacjowe",
+        "name": "Ciastka pistacjowe",
+        "price": "15 zł / 2 szt",
+        "image": "/static/img/pastry/ciastka-pistacjowe.jpg"
+    },
+    {
+        "id": "ciastka-tahini-czekolada",
+        "name": "Ciastka tahini z kawałkami czekolady",
+        "price": "15 zł / 2 szt",
+        "image": "/static/img/pastry/ciastka-tahini-czekolada.jpg"
+    },
+    {
+        "id": "kokosanki",
+        "name": "Kokosanki",
+        "price": "12 zł / 10 szt",
+        "image": "/static/img/pastry/kokosanki.jpg"
+    },
+    {
+        "id": "muffinki-brownie-krem",
+        "name": "Muffinki Brownie z kremem czekoladowym",
+        "desc": "Min. 3 szt.",
+        "price": "8 zł / szt",
+        "image": "/static/img/pastry/muffinki-brownie-krem.jpg",
+        "badge": "Min. 3"
+    },
+    {
+        "id": "deser-smietankowy-orzech",
+        "name": "Orzechowy deser śmietankowy",
+        "price": "12 zł / szt",
+        "image": "/static/img/pastry/deser-orzech.jpg"
+    },
+    {
+        "id": "deser-smietankowy-pistacja",
+        "name": "Pistacjowy deser śmietankowy",
+        "price": "15 zł / szt",
+        "image": "/static/img/pastry/deser-pistacja.jpg"
+    },
+    {
+        "id": "keto-tartaletki-rozne",
+        "name": "Keto-tartaletki na bazie kremu mascarpone (różne smaki)",
+        "desc": "Z owocami, pistacjowe, orzechowe, czekoladowe. Min. 2 szt.",
+        "price": "13 zł / szt",
+        "image": "/static/img/pastry/tartaletki-rozne.jpg",
+        "badge": "Min. 2"
+    },
+    {
+        "id": "keto-cynamonki",
+        "name": "Keto cynamonki",
+        "price": "—",
+        "desc": "Zapytaj o cenę i dostępność.",
+        "image": "/static/img/pastry/keto-cynamonki.jpg",
+        "badge": "Zapytaj"
+    },
+
+    # --- Serniki (12/6 porcji) ---
+    {
+        "id": "sernik-pistacjowy",
+        "name": "Sernik pistacjowy (12 / 6 porcji)",
+        "desc": "Śr. 26 cm przy całym.",
+        "price": "180 zł / 90 zł",
+        "image": "/static/img/pastry/sernik-pistacjowy.jpg",
+        "badge": "Sernik"
+    },
+    {
+        "id": "sernik-migdalowy-spod",
+        "name": "Sernik na migdałowym spodzie (12 / 6 porcji)",
+        "desc": "Śr. 26 cm przy całym.",
+        "price": "120 zł / 60 zł",
+        "image": "/static/img/pastry/sernik-migdalowy-spod.jpg",
+        "badge": "Sernik"
+    },
+    {
+        "id": "sernik-borowki-kruszonka",
+        "name": "Sernik z borówkami i kruszonką (12 / 6 porcji)",
+        "desc": "Śr. 26 cm przy całym.",
+        "price": "180 zł / 90 zł",
+        "image": "/static/img/pastry/sernik-borowki-kruszonka.jpg",
+        "badge": "Sernik"
+    },
+    {
+        "id": "sernik-kokosowy",
+        "name": "Sernik kokosowy (12 / 6 porcji)",
+        "desc": "Śr. 26 cm przy całym.",
+        "price": "120 zł / 60 zł",
+        "image": "/static/img/pastry/sernik-kokosowy.jpg",
+        "badge": "Sernik"
+    },
+    {
+        "id": "sernik-kawowy",
+        "name": "Sernik kawowy (12 / 6 porcji)",
+        "desc": "Śr. 26 cm przy całym.",
+        "price": "100 zł / 50 zł",
+        "image": "/static/img/pastry/sernik-kawowy.jpg",
+        "badge": "Sernik"
+    },
+    {
+        "id": "sernik-zebra",
+        "name": "Sernik „zebra” (12 / 6 porcji)",
+        "desc": "Śr. 26 cm przy całym.",
+        "price": "120 zł / 60 zł",
+        "image": "/static/img/pastry/sernik-zebra.jpg",
+        "badge": "Sernik"
     },
 ]
 CATEGORY_MAP = {
