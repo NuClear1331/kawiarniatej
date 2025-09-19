@@ -335,14 +335,8 @@ def inject_nav():
 
 @app.route("/")
 def home():
-    gallery_images = [
-        "/static/img/galleryimg/a.img",
-        "/static/img/galleryimg/b.img",
-        "/static/img/galleryimg/c.img",
-        "/static/img/galleryimg/d.img",
-        "/static/img/galleryimg/e.img",
-        "/static/img/galleryimg/f.img",
-    ]
+    gallery_files = ["a.jpg", "b.jpg", "c.jpg", "d.jpg", "e.jpg", "f.jpg"]
+    gallery_images = [url_for('static', filename=f'img/galleryimg/{name}') for name in gallery_files]
     carousel_images = [
         "https://picsum.photos/seed/car1/1280/640",
         "https://picsum.photos/seed/car2/1280/640",
