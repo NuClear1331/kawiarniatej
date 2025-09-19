@@ -450,8 +450,7 @@ a:focus{
 .menu-line-name{ max-width: 65%; }
 @media (max-width: 576px){ .menu-line-name{ max-width: 60%; } }
 /* Make each grid cell stretch so all cards line up cleanly */
-.row.g-4 > [class*="col-"] { display: flex; }
-.row.g-4 > [class*="col-"] > section { display: flex; width: 100%; }
+.col-12.col-lg-6.d-flex > section { width: 100%; }
 
 /* Title inside the card gets gentle separation */
 .menu-card-header h3{
