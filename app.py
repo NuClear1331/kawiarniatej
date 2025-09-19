@@ -16,7 +16,7 @@ app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER', app.co
 mail = Mail(app)
 
 # Sample products (placeholder images via picsum)
-BREADS = [
+BAKERY_ITEMS = [
     {
         "id": "chleb-zytni",
         "name": "Chleb żytni na zakwasie",
@@ -35,7 +35,7 @@ BREADS = [
     # ← wkleję tu Twoją pełną listę po otrzymaniu .docx/.pdf/tekstu
 ]
 
-CAKES = [
+PASTRY_ITEMS = [
     {
         "id": "sernik-krakowski",
         "name": "Sernik krakowski",
@@ -52,9 +52,19 @@ CAKES = [
         "image": "/static/img/pastry/tarta-malinowa.jpg"
     },
 ]
+CATEGORY_MAP = {
+    "piekarnicze": {
+        "title": "Wyroby piekarnicze",
+        "items": BAKERY_ITEMS
+    },
+    "cukiernicze": {
+        "title": "Wyroby cukiernicze",
+        "items": PASTRY_ITEMS
+    },
+}
 
 def all_products():
-    return BREADS + CAKES
+    return BAKERY_ITEMS + PASTRY_ITEMS
 
 @app.context_processor
 def inject_nav():
@@ -104,14 +114,29 @@ def keto():
 @app.route("/ciasta-i-chleby")
 def ciasta_i_chleby():
     return render_template("ciasta_i_chleby.html")
+@app.route("/produkty")
+def products():
+    key = (request.args.get("category") or "").lower()
+    ctx = CATEGORY_MAP.get(key)
+    if not ctx:
+        # domyślnie pokaż wybór albo przekieruj do jednej z kategorii
+        # return render_template("products_chooser.html")
+        # albo:
+        return render_template("products.html", category="Wyroby piekarnicze", products=BAKERY_ITEMS)
 
-@app.route("/chleby")
-def chleby():
-    return render_template("products.html", products=BREADS, category="Chleby")
+    return render_template(
+        "products.html",
+        category=ctx["title"],
+        products=ctx["items"]
+    )
 
-@app.route("/ciasta")
-def ciasta():
-    return render_template("products.html", products=CAKES, category="Ciasta")
+#@app.route("/chleby")
+#def chleby():
+#    return render_template("products.html", products=BREADS, category="Chleby")
+
+#@app.route("/ciasta")
+#def ciasta():
+#    return render_template("products.html", products=CAKES, category="Ciasta")
 
 @app.post("/add-to-cart/<int:product_id>")
 def add_to_cart(product_id: int):
