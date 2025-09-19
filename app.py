@@ -16,6 +16,7 @@ app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER', app.co
 mail = Mail(app)
 
 # Sample products (placeholder images via picsum)
+# --- Wyroby piekarnicze (Chleby) ---
 BAKERY_ITEMS = [
     {
         "id": "chleb-maslo-orzechowe",
@@ -23,7 +24,8 @@ BAKERY_ITEMS = [
         "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
         "price": "19 zł",
         "image": "/static/img/bakery/chleb-maslo-orzechowe.jpg",
-        "badge": "Keto"
+        "badge": "Keto",
+        "macros": {"kcal": 1267, "B": 71, "W": 22, "T": 102},
     },
     {
         "id": "chleb-siemie-lniane",
@@ -31,15 +33,17 @@ BAKERY_ITEMS = [
         "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
         "price": "13 zł",
         "image": "/static/img/bakery/chleb-siemie-lniane.jpg",
-        "badge": "Keto"
+        "badge": "Keto",
+        "macros": {"kcal": 2357, "B": 99, "W": 67, "T": 162},
     },
     {
-        "id": "chleb-cebulka-niedzwiedzi",
+        "id": "chleb-cebulka-czosnek-niedzwiedzi",
         "name": "Chleb z suszoną cebulką i czosnkiem niedźwiedzim",
         "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
         "price": "22 zł",
         "image": "/static/img/bakery/chleb-cebulka-czosnek-niedzwiedzi.jpg",
-        "badge": "Aromatyczny"
+        "badge": "Aromatyczny",
+        "macros": {"kcal": 2273, "B": 114.8, "W": 25.5, "T": 190.2},
     },
     {
         "id": "chleb-mascarpone",
@@ -47,7 +51,8 @@ BAKERY_ITEMS = [
         "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
         "price": "20 zł",
         "image": "/static/img/bakery/chleb-mascarpone.jpg",
-        "badge": "Keto"
+        "badge": "Keto",
+        "macros": {"kcal": 2816, "B": 97.6, "W": 29.4, "T": 248.2},
     },
     {
         "id": "chleb-majonez",
@@ -55,7 +60,8 @@ BAKERY_ITEMS = [
         "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
         "price": "20 zł",
         "image": "/static/img/bakery/chleb-majonez.jpg",
-        "badge": "Keto"
+        "badge": "Keto",
+        "macros": {"kcal": 2768, "B": 57.3, "W": 35.7, "T": 261.7},
     },
     {
         "id": "bulki-lnianie-3",
@@ -63,7 +69,8 @@ BAKERY_ITEMS = [
         "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
         "price": "10 zł / 3 szt",
         "image": "/static/img/bakery/bulki-lniane.jpg",
-        "badge": "Pakiet"
+        "badge": "Pakiet",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "bulki-migdalowe-3",
@@ -71,32 +78,36 @@ BAKERY_ITEMS = [
         "desc": "Przechowywać w chłodnym i suchym miejscu; można mrozić.",
         "price": "10 zł / 3 szt",
         "image": "/static/img/bakery/bulki-migdalowe.jpg",
-        "badge": "Pakiet"
+        "badge": "Pakiet",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
 ]
 
-
+# --- Wyroby cukiernicze (Ciasta) ---
 PASTRY_ITEMS = [
     {
         "id": "keto-brownie",
         "name": "Keto brownie",
         "price": "120 zł",
         "image": "/static/img/pastry/keto-brownie.jpg",
-        "badge": "Keto"
+        "badge": "Keto",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "keto-brownie-orzech",
         "name": "Keto brownie z masłem orzechowym i orzechami",
         "price": "140 zł",
         "image": "/static/img/pastry/keto-brownie-orzech.jpg",
-        "badge": "Keto"
+        "badge": "Keto",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "keto-tarta-jagodowa",
         "name": "Keto tarta z owocami jagodowymi i kremem mascarpone-śmietana",
         "price": "80 zł",
         "image": "/static/img/pastry/keto-tarta-jagodowa.jpg",
-        "badge": "Keto"
+        "badge": "Keto",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "babeczki-tluszczowe",
@@ -104,37 +115,43 @@ PASTRY_ITEMS = [
         "desc": "Min. 3 szt.",
         "price": "7 zł / szt",
         "image": "/static/img/pastry/babeczki-tluszczowe.jpg",
-        "badge": "Min. 3"
+        "badge": "Min. 3",
+        "macros": {"kcal": 194, "B": 7, "W": 3, "T": 17},
     },
     {
         "id": "ciastka-maslo-orzechowe-slonecznik",
         "name": "Ciastka z masła orzechowego ze słonecznikiem",
         "price": "10 zł / 2 szt",
-        "image": "/static/img/pastry/ciastka-orzech-slonecznik.jpg"
+        "image": "/static/img/pastry/ciastka-orzech-slonecznik.jpg",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "ciastka-orzech-czekolada",
         "name": "Ciastka orzechowe z kawałkami czekolady",
         "price": "14 zł / 2 szt",
-        "image": "/static/img/pastry/ciastka-orzech-czekolada.jpg"
+        "image": "/static/img/pastry/ciastka-orzech-czekolada.jpg",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "ciastka-pistacjowe",
         "name": "Ciastka pistacjowe",
         "price": "15 zł / 2 szt",
-        "image": "/static/img/pastry/ciastka-pistacjowe.jpg"
+        "image": "/static/img/pastry/ciastka-pistacjowe.jpg",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "ciastka-tahini-czekolada",
         "name": "Ciastka tahini z kawałkami czekolady",
         "price": "15 zł / 2 szt",
-        "image": "/static/img/pastry/ciastka-tahini-czekolada.jpg"
+        "image": "/static/img/pastry/ciastka-tahini-czekolada.jpg",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "kokosanki",
         "name": "Kokosanki",
         "price": "12 zł / 10 szt",
-        "image": "/static/img/pastry/kokosanki.jpg"
+        "image": "/static/img/pastry/kokosanki.jpg",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "muffinki-brownie-krem",
@@ -142,19 +159,22 @@ PASTRY_ITEMS = [
         "desc": "Min. 3 szt.",
         "price": "8 zł / szt",
         "image": "/static/img/pastry/muffinki-brownie-krem.jpg",
-        "badge": "Min. 3"
+        "badge": "Min. 3",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "deser-smietankowy-orzech",
         "name": "Orzechowy deser śmietankowy",
         "price": "12 zł / szt",
-        "image": "/static/img/pastry/deser-orzech.jpg"
+        "image": "/static/img/pastry/deser-orzech.jpg",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "deser-smietankowy-pistacja",
         "name": "Pistacjowy deser śmietankowy",
         "price": "15 zł / szt",
-        "image": "/static/img/pastry/deser-pistacja.jpg"
+        "image": "/static/img/pastry/deser-pistacja.jpg",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "keto-tartaletki-rozne",
@@ -162,18 +182,20 @@ PASTRY_ITEMS = [
         "desc": "Z owocami, pistacjowe, orzechowe, czekoladowe. Min. 2 szt.",
         "price": "13 zł / szt",
         "image": "/static/img/pastry/tartaletki-rozne.jpg",
-        "badge": "Min. 2"
+        "badge": "Min. 2",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "keto-cynamonki",
         "name": "Keto cynamonki",
-        "price": "—",
         "desc": "Zapytaj o cenę i dostępność.",
+        "price": "—",
         "image": "/static/img/pastry/keto-cynamonki.jpg",
-        "badge": "Zapytaj"
+        "badge": "Zapytaj",
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
 
-    # --- Serniki (12/6 porcji) ---
+    # --- Serniki (warianty 12/6 porcji) ---
     {
         "id": "sernik-pistacjowy",
         "name": "Sernik pistacjowy",
@@ -182,8 +204,9 @@ PASTRY_ITEMS = [
         "badge": "Sernik",
         "variants": [
             {"id": "12", "label": "12 porcji", "price": "180 zł"},
-            {"id": "6",  "label": "6 porcji",  "price": "90 zł"}
-        ]
+            {"id": "6",  "label": "6 porcji",  "price": "90 zł"},
+        ],
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "sernik-migdalowy-spod",
@@ -193,8 +216,9 @@ PASTRY_ITEMS = [
         "badge": "Sernik",
         "variants": [
             {"id": "12", "label": "12 porcji", "price": "120 zł"},
-            {"id": "6",  "label": "6 porcji",  "price": "60 zł"}
-        ]
+            {"id": "6",  "label": "6 porcji",  "price": "60 zł"},
+        ],
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "sernik-borowki-kruszonka",
@@ -204,8 +228,9 @@ PASTRY_ITEMS = [
         "badge": "Sernik",
         "variants": [
             {"id": "12", "label": "12 porcji", "price": "180 zł"},
-            {"id": "6",  "label": "6 porcji",  "price": "90 zł"}
-        ]
+            {"id": "6",  "label": "6 porcji",  "price": "90 zł"},
+        ],
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "sernik-kokosowy",
@@ -215,8 +240,9 @@ PASTRY_ITEMS = [
         "badge": "Sernik",
         "variants": [
             {"id": "12", "label": "12 porcji", "price": "120 zł"},
-            {"id": "6",  "label": "6 porcji",  "price": "60 zł"}
-        ]
+            {"id": "6",  "label": "6 porcji",  "price": "60 zł"},
+        ],
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "sernik-kawowy",
@@ -226,8 +252,9 @@ PASTRY_ITEMS = [
         "badge": "Sernik",
         "variants": [
             {"id": "12", "label": "12 porcji", "price": "100 zł"},
-            {"id": "6",  "label": "6 porcji",  "price": "50 zł"}
-        ]
+            {"id": "6",  "label": "6 porcji",  "price": "50 zł"},
+        ],
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
     {
         "id": "sernik-zebra",
@@ -237,10 +264,12 @@ PASTRY_ITEMS = [
         "badge": "Sernik",
         "variants": [
             {"id": "12", "label": "12 porcji", "price": "120 zł"},
-            {"id": "6",  "label": "6 porcji",  "price": "60 zł"}
-        ]
+            {"id": "6",  "label": "6 porcji",  "price": "60 zł"},
+        ],
+        "macros": {"kcal": None, "B": None, "W": None, "T": None},
     },
 ]
+
 CATEGORY_MAP = {
     "piekarnicze": {
         "title": "Wyroby piekarnicze",

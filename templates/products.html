@@ -39,6 +39,22 @@
           {% if desc_txt %}
             <p class="card-text text-muted-ink mb-3">{{ desc_txt }}</p>
           {% endif %}
+          <!--MACROS-->
+          {% set desc_txt = item.desc or item.description or item.opis %}
+          {% if desc_txt %}
+            <p class="card-text text-muted-ink mb-2">{{ desc_txt }}</p>
+          {% endif %}
+
+          {# Nutri/macros line #}
+          {% set m = item.macros %}
+          {% if m and (m.kcal is not none or m.B is not none or m.W is not none or m.T is not none) %}
+            <div class="macros small mb-3">
+              {% if m.kcal is not none %}<span class="macro-pill">kcal: {{ m.kcal }}</span>{% endif %}
+              {% if m.B    is not none %}<span class="macro-pill">B: {{ m.B }} g</span>{% endif %}
+              {% if m.W    is not none %}<span class="macro-pill">W: {{ m.W }} g</span>{% endif %}
+              {% if m.T    is not none %}<span class="macro-pill">T: {{ m.T }} g</span>{% endif %}
+            </div>
+          {% endif %}
 
           <!-- FOOT (price / variant / add) -->
           <div class="mt-auto d-flex flex-column gap-2">
