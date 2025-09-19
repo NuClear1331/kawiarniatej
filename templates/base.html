@@ -25,7 +25,7 @@
 </head>
 <body>
   <header class="mb-3">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-bottle shadow-sm fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-bottle shadow-sm fixed-tops">
       <div class="container">
         <a class="navbar-brand fw-semibold" href="{{ url_for('home') }}">Kawiarnia Tej</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
@@ -71,6 +71,53 @@
       <small>© 2025 Kawiarnia Tej — Poznań</small>
     </div>
   </footer>
+
+      <!-- Floating Cart Pill and Dropdown Menu -->
+    <div class="cart-pill position-fixed bottom-0 end-0 me-4 mb-4" style="z-index: 1050;">
+      <!-- Cart pill button -->
+      <div id="cart-pill-btn" class="py-2 px-3 text-white rounded-pill shadow" 
+          style="cursor:pointer; background-color: rgba(34, 49, 34, 0.8);">
+        🛒 Koszyk (<span id="cart-count">{{ session.cart|length if session.cart else 0 }}</span>)
+      </div>
+      <!-- Dropdown menu (initially hidden) -->
+      <div id="cart-dropdown" class="cart-dropdown rounded shadow-lg mt-2">
+        <ul class="list-unstyled mb-2">
+          {% set seen = [] %}
+          {% for pid in session.get('cart', [])|default([], true) %}
+            {% if pid not in seen %}
+              {% set seen = seen + [pid] %}
+              {% set qty = session.get('cart', []) | select("equalto", pid) | list | length %}
+              <li class="d-flex justify-content-between align-items-center py-1 border-bottom">
+                <span>{{ ALL_PRODUCTS[pid].name }} ({{ qty }}×)</span>
+                <!-- Remove item link -->
+                <a href="{{ url_for('remove_from_cart', product_id=pid) }}" class="text-danger text-decoration-none fw-bold">&times;</a>
+              </li>
+            {% endif %}
+          {% endfor %}
+          {% if session.get('cart', [])|length == 0 %}
+            <li class="py-1 text-muted">Koszyk jest pusty.</li>
+          {% endif %}
+        </ul>
+        <!-- "Go to Order" button -->
+        <a href="{{ url_for('zamowienie') }}" class="btn btn-sm btn-success w-100">Przejdź do zamówienia</a>
+      </div>
+    </div>
+
+    <script>
+      // Toggle the cart dropdown visibility on pill click
+      const cartBtn = document.getElementById('cart-pill-btn');
+      const cartMenu = document.getElementById('cart-dropdown');
+      cartBtn.addEventListener('click', () => {
+        cartMenu.classList.toggle('open');
+      });
+      // Hide dropdown when clicking outside of it
+      document.addEventListener('click', (e) => {
+        if (cartMenu.classList.contains('open') && !cartBtn.contains(e.target) && !cartMenu.contains(e.target)) {
+          cartMenu.classList.remove('open');
+        }
+      });
+    </script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ url_for('static', filename='js/cart.js', v='7') }}"></script>

@@ -378,6 +378,8 @@ def all_products():
     return BAKERY_ITEMS + PASTRY_ITEMS
 
 @app.context_processor
+def inject_products():
+    return {"ALL_PRODUCTS": all_products()}
 def inject_nav():
     return {
         "NAV": [
@@ -390,6 +392,13 @@ def inject_nav():
     }
 
 @app.route("/")
+def remove_from_cart(product_id: int):
+    cart = session.get("cart", [])
+    # Remove all occurrences of the product_id from the cart list
+    cart = [pid for pid in cart if pid != product_id]
+    session["cart"] = cart
+    flash("Usunięto produkt z koszyka.", "info")
+    return redirect(request.referrer or url_for("ciasta_i_chleby"))
 def home():
     gallery_files = ["a.jpg", "b.jpg", "c.jpg", "d.jpg", "e.jpg", "f.jpg"]
     gallery_images = [url_for('static', filename=f'img/galleryimg/{name}') for name in gallery_files]
@@ -412,7 +421,10 @@ def keto():
 
 @app.route("/ciasta-i-chleby")
 def ciasta_i_chleby():
-    return render_template("ciasta_i_chleby.html")
+    # Load both categories of products for the template
+    return render_template("ciasta_i_chleby.html", 
+                           bakery_items=BAKERY_ITEMS, 
+                           pastry_items=PASTRY_ITEMS)
 @app.route("/produkty")
 def products():
     key = (request.args.get("category") or "").lower()

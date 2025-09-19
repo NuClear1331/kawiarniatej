@@ -1,19 +1,71 @@
 {% extends "base.html" %}
-{% block title %}Kawiarnia Tej — Ciasta i Chleby{% endblock %}
+{% block title %}Zamów – Kawiarnia TEJ{% endblock %}
 {% block content %}
-<h2 class="mb-4">Ciasta i Chleby</h2>
-<div class="row g-3">
-  <div class="col-12 col-md-6">
-    <a class="choice-tile card p-4 h-100" href="{{ url_for('products', category='piekarnicze') }}">
-  <h3 class="mb-1">Wyroby piekarnicze</h3>
-  <p class="mb-0 text-muted-ink">Chleby…</p>
-</a>
-  </div>
-  <div class="col-12 col-md-6">
-    <a class="choice-tile card p-4 h-100" href="{{ url_for('products', category='cukiernicze') }}">
-  <h3 class="mb-1">Wyroby cukiernicze</h3>
-  <p class="mb-0 text-muted-ink">Ciasta, tarty, babeczki…</p>
-</a>
+<div class="container py-5">  
+  <!-- Page Heading -->
+  <h1 class="mb-4 text-center">Zamów nasze wyroby</h1>
+  <!-- Category Nav Pills -->
+  <ul class="nav nav-pills justify-content-center mb-4" id="productTabs" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="piekarnicze-tab" data-bs-toggle="tab" data-bs-target="#piekarnicze" type="button" role="tab" aria-controls="piekarnicze" aria-selected="true">
+        Wyroby piekarnicze
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="cukiernicze-tab" data-bs-toggle="tab" data-bs-target="#cukiernicze" type="button" role="tab" aria-controls="cukiernicze" aria-selected="false">
+        Wyroby cukiernicze
+      </button>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <!-- Bakery Products Pane -->
+    <div class="tab-pane fade show active" id="piekarnicze" role="tabpanel" aria-labelledby="piekarnicze-tab">
+      <div class="row g-4">
+        {% for product in bakery_items %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ product.name }}{% if product.badge %} <span class="badge bg-secondary">{{ product.badge }}</span>{% endif %}</h5>
+              {% if product.desc %}
+              <p class="card-text text-muted small">{{ product.desc }}</p>
+              {% endif %}
+              <p class="mt-auto fw-bold">{{ product.price }}</p>
+              <!-- Add-to-cart form -->
+              <form action="{{ url_for('add_to_cart', product_id=loop.index0) }}" method="post">
+                <button type="submit" class="btn btn-outline-success w-100 btn-sm">Dodaj do zamówienia</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Pastry Products Pane -->
+    <div class="tab-pane fade" id="cukiernicze" role="tabpanel" aria-labelledby="cukiernicze-tab">
+      <div class="row g-4">
+        {% set offset = bakery_items|length %}
+        {% for product in pastry_items %}
+        <div class="col-md-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">{{ product.name }}{% if product.badge %} <span class="badge bg-secondary">{{ product.badge }}</span>{% endif %}</h5>
+              {% if product.desc %}
+              <p class="card-text text-muted small">{{ product.desc }}</p>
+              {% endif %}
+              <p class="mt-auto fw-bold">{{ product.price }}</p>
+              <form action="{{ url_for('add_to_cart', product_id=offset + loop.index0) }}" method="post">
+                <button type="submit" class="btn btn-outline-success w-100 btn-sm">Dodaj do zamówienia</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
